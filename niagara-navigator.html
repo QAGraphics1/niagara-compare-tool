@@ -1,0 +1,3510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Niagara Navigator - Point Explorer</title>
+    <style>
+        :root {
+            /* BAS Professional Color Palette */
+            --primary-color: #0066cc;
+            --secondary-color: #2C3E50;
+            --accent-color: #3498DB;
+            --success-color: #27AE60;
+            --warning-color: #F39C12;
+            --error-color: #E74C3C;
+            --background-color: #F7F9FB;
+            --surface-color: #FFFFFF;
+            --text-primary: #2C3E50;
+            --text-secondary: #6C757D;
+            --text-muted: #95A5A6;
+            --border-color: #E1E8ED;
+            --shadow-light: 0 2px 4px rgba(44, 62, 80, 0.08);
+            --shadow-medium: 0 4px 12px rgba(44, 62, 80, 0.12);
+            --shadow-heavy: 0 8px 25px rgba(44, 62, 80, 0.15);
+            --radius-small: 6px;
+            --radius-medium: 8px;
+            --radius-large: 12px;
+            --transition: all 0.2s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', 'Roboto', sans-serif;
+            background: var(--background-color);
+            color: var(--text-primary);
+            font-size: 14px;
+            line-height: 1.5;
+            overflow: hidden;
+            font-weight: 400;
+        }
+        
+        .app {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            background: var(--primary-color);
+            color: white;
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow-medium);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header h1 {
+            font-size: 20px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .logo-img {
+            height: 32px;
+            width: auto;
+            filter: brightness(0) invert(1);
+            opacity: 0.95;
+        }
+
+        .header-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 4px;
+            font-size: 12px;
+            opacity: 0.9;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .nav-button {
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--radius-small);
+            color: white;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 500;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .nav-button:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .nav-button.active {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.4);
+            font-weight: 600;
+        }
+
+        .clear-button {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: rgba(231, 76, 60, 0.1);
+            border: 1px solid rgba(231, 76, 60, 0.3);
+            border-radius: var(--radius-small);
+            color: #E74C3C;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+        }
+
+        .clear-button:hover {
+            background: rgba(231, 76, 60, 0.2);
+            border-color: rgba(231, 76, 60, 0.5);
+            transform: translateY(-1px);
+        }
+
+        .clear-button svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .header-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success-color);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        .toolbar {
+            background: var(--surface-color);
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            gap: 12px;
+            box-shadow: var(--shadow-light);
+        }
+
+        .btn {
+            padding: 10px 16px;
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            border-radius: var(--radius-small);
+            color: var(--text-primary);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+        }
+
+        .btn:hover {
+            background: var(--background-color);
+            border-color: var(--accent-color);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-light);
+        }
+
+        .btn.active {
+            background: var(--accent-color);
+            color: white;
+            border-color: var(--accent-color);
+            box-shadow: var(--shadow-light);
+        }
+
+        .btn.primary {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .btn.primary:hover {
+            background: #094046;
+            border-color: #094046;
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-medium);
+        }
+        
+        .main {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+        
+        .sidebar {
+            width: 320px;
+            background: var(--surface-color);
+            border-right: 1px solid var(--border-color);
+            padding: 24px;
+            overflow-y: auto;
+            box-shadow: var(--shadow-light);
+        }
+
+        .content {
+            flex: 1;
+            background: var(--background-color);
+            overflow-y: auto;
+        }
+        
+        .detail-panel {
+            width: 420px;
+            background: var(--surface-color);
+            border-left: 1px solid var(--border-color);
+            padding: 0;
+            overflow-y: auto;
+            display: none;
+            box-shadow: var(--shadow-medium);
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .detail-panel.show {
+            display: block;
+            transform: translateX(0);
+        }
+        
+        /* Tree Styles */
+        .tree {
+            font-family: var(--font-family);
+            font-size: 13px;
+            padding: 24px;
+            background: var(--surface-color);
+            border-radius: var(--radius-medium);
+            margin: 16px;
+            box-shadow: var(--shadow-light);
+        }
+
+        .tree-item {
+            padding: 8px 12px;
+            border-radius: var(--radius-small);
+            cursor: pointer;
+            user-select: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition);
+            position: relative;
+            margin: 2px 0;
+        }
+
+        .tree-item:hover {
+            background: var(--background-color);
+            transform: translateX(4px);
+            box-shadow: var(--shadow-light);
+        }
+
+        .tree-item.device {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .tree-item.device:hover {
+            background: rgba(11, 76, 95, 0.08);
+            border-left: 3px solid var(--primary-color);
+        }
+
+        .tree-item.selected {
+            background: var(--accent-color);
+            color: white;
+            box-shadow: var(--shadow-medium);
+        }
+
+        .tree-item.point {
+            font-style: italic;
+            color: var(--text-muted);
+            padding-left: 32px;
+        }
+
+        .tree-item.point:hover {
+            background: rgba(245, 166, 35, 0.1);
+            border-left: 3px solid var(--accent-color);
+        }
+
+        /* Delete button styles */
+        .delete-btn {
+            width: 18px;
+            height: 18px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+            opacity: 0;
+            transition: all 0.2s ease;
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .tree-item:hover .delete-btn {
+            opacity: 1;
+        }
+
+        .delete-btn:hover {
+            background: #c82333;
+            transform: scale(1.1);
+            box-shadow: 0 2px 4px rgba(220, 53, 69, 0.3);
+        }
+
+        /* Excluded items styles */
+        .tree-item.excluded {
+            opacity: 0.4;
+            text-decoration: line-through;
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .tree-item.excluded .device-checkbox {
+            pointer-events: none;
+            opacity: 0.3;
+        }
+
+        .tree-item.excluded .node-name {
+            color: #666;
+        }
+
+        .tree-item.excluded .delete-btn {
+            background: #28a745;
+            color: white;
+        }
+
+        .tree-item.excluded .delete-btn:hover {
+            background: #218838;
+            transform: scale(1.1);
+            box-shadow: 0 2px 4px rgba(40, 167, 69, 0.3);
+        }
+
+        /* Expand button styles */
+        .expand-btn {
+            width: 16px;
+            height: 16px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: all 0.2s ease;
+        }
+
+        .expand-btn:hover {
+            background: var(--accent-color);
+            transform: scale(1.1);
+        }
+
+        .expand-spacer {
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+        }
+
+        .node-icon {
+            flex-shrink: 0;
+        }
+
+        .node-name {
+            flex-grow: 1;
+        }
+
+        .tree-children {
+            margin-left: 24px;
+            display: none;
+            border-left: 2px solid var(--border-color);
+            margin-top: 4px;
+            padding-left: 8px;
+        }
+
+        .tree-children.open {
+            display: block;
+        }
+
+        .tree-toggle {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            color: var(--text-secondary);
+        }
+
+        .tree-toggle.expanded {
+            transform: rotate(90deg);
+        }
+
+        .tree-icon {
+            color: var(--accent-color);
+        }
+
+        .tree-icon.device {
+            color: var(--success-color);
+        }
+
+        .tree-icon.junk {
+            color: var(--text-muted);
+        }
+        
+        .point {
+            padding: 6px 12px;
+            border-radius: var(--radius-small);
+            cursor: copy;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary);
+            transition: var(--transition);
+            margin: 1px 0;
+        }
+
+        .point:hover {
+            background: rgba(52, 152, 219, 0.08);
+            transform: translateX(6px);
+            color: var(--accent-color);
+            box-shadow: var(--shadow-light);
+        }
+
+        .point-icon {
+            width: 12px;
+            height: 12px;
+            fill: var(--accent-color);
+            flex-shrink: 0;
+        }
+
+        .point-name {
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 12px;
+        }
+        
+        /* Templates Report */
+        .templates-report {
+            padding: 20px;
+        }
+
+        /* Reflow Builder */
+        .reflow-builder {
+            padding: 20px;
+            max-width: 1200px;
+        }
+
+        .reflow-container {
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .reflow-section {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .reflow-section:last-child {
+            border-bottom: none;
+        }
+
+        .reflow-section h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .template-select {
+            width: 100%;
+            max-width: 500px;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            background: white;
+        }
+
+        .template-preview {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 6px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+
+        .points-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .point-item {
+            background: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            border: 1px solid #dee2e6;
+            font-size: 12px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .partial-matches-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .partial-match-item {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 6px;
+            padding: 15px;
+        }
+
+        .partial-match-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .partial-match-similarity {
+            color: var(--success-color);
+            font-weight: 500;
+            margin-left: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .form-control {
+            width: 100%;
+            max-width: 400px;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .summary-card {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .summary-stats {
+            display: flex;
+            gap: 40px;
+            margin-top: 15px;
+        }
+        
+        .stat {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .stat-value {
+            font-size: 32px;
+            font-weight: bold;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            opacity: 0.9;
+            text-transform: uppercase;
+        }
+        
+        .template-card {
+            background: white;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+        
+        .template-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #e9ecef;
+        }
+        
+        .template-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .template-count {
+            background: #3498db;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .device-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 8px;
+            margin-top: 12px;
+        }
+        
+        .device-item {
+            background: #f8f9fa;
+            padding: 6px 10px;
+            border-radius: 4px;
+            font-size: 13px;
+            border-left: 3px solid #3498db;
+            cursor: help;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Checkbox styles */
+        .device-checkbox {
+            width: 16px;
+            height: 16px;
+            margin-right: 8px;
+            cursor: pointer;
+            accent-color: var(--primary-color);
+            flex-shrink: 0;
+        }
+
+        .tree-item.device-checked {
+            background: rgba(52, 152, 219, 0.1);
+            border-left: 3px solid var(--primary-color);
+        }
+
+        .template-controls {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+            padding: 8px;
+            background: rgba(0, 102, 204, 0.05);
+            border-radius: 6px;
+            border: 1px solid rgba(0, 102, 204, 0.1);
+        }
+
+        .template-control-btn {
+            padding: 4px 12px;
+            border: 1px solid var(--border-color);
+            background: white;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .template-control-btn:hover {
+            background: var(--background-color);
+            transform: translateY(-1px);
+        }
+
+        .template-control-btn.check-all {
+            color: var(--success-color);
+            border-color: var(--success-color);
+        }
+
+        .template-control-btn.check-all:hover {
+            background: rgba(40, 167, 69, 0.1);
+        }
+
+        .template-control-btn.uncheck-all {
+            color: var(--danger-color);
+            border-color: var(--danger-color);
+        }
+
+        .template-control-btn.uncheck-all:hover {
+            background: rgba(220, 53, 69, 0.1);
+        }
+        
+        .points-summary {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid #e9ecef;
+            font-size: 12px;
+            color: #6c757d;
+        }
+
+        .points-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+
+        .expand-points-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--accent-color);
+            font-size: 12px;
+            padding: 2px 6px;
+            border-radius: 3px;
+            transition: var(--transition);
+        }
+
+        .expand-points-btn:hover {
+            background: var(--accent-color);
+            color: white;
+        }
+
+        .points-expanded {
+            margin-top: 8px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 4px;
+        }
+
+        .template-point-item {
+            padding: 4px 8px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 11px;
+            transition: var(--transition);
+        }
+
+        .template-point-item:hover {
+            background: var(--accent-color);
+            color: white;
+        }
+
+        /* Template Naming and Time Inputs */
+        .template-name-input {
+            background: transparent;
+            border: 1px solid transparent;
+            font-weight: 600;
+            font-size: 16px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            color: inherit;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .template-name-input:hover,
+        .template-name-input:focus {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+            outline: none;
+        }
+
+        .template-time-input-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 12px;
+            font-size: 14px;
+            color: #6c757d;
+        }
+
+        .template-hours-input {
+            width: 80px;
+            padding: 4px 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background: white;
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+
+        .template-hours-input:hover,
+        .template-hours-input:focus {
+            border-color: var(--accent-color);
+            background: #f8f9fa;
+            outline: none;
+        }
+
+        .template-hours-input::placeholder {
+            color: #6c757d;
+        }
+
+        .export-quote-section {
+            margin-top: 16px;
+            text-align: center;
+        }
+
+        .quote-export {
+            background: var(--success-color) !important;
+            border-color: var(--success-color) !important;
+        }
+
+        .quote-export:hover {
+            background: #219a52 !important;
+            border-color: #219a52 !important;
+        }
+
+        /* Detail Panel */
+        .detail-header {
+            background: var(--primary-color);
+            color: white;
+            padding: 20px 24px;
+            margin: 0;
+            box-shadow: var(--shadow-light);
+        }
+
+        .detail-header h3 {
+            margin: 0 0 8px 0;
+            font-size: 18px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .detail-header .device-path {
+            font-size: 12px;
+            opacity: 0.9;
+            font-family: 'Monaco', 'Menlo', monospace;
+        }
+
+        .detail-section {
+            margin: 16px 24px;
+            padding: 16px;
+            background: var(--background-color);
+            border-radius: var(--radius-medium);
+            border: 1px solid var(--border-color);
+        }
+
+        .detail-section h4 {
+            margin: 0 0 12px 0;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        /* Clickable device links in detail panel */
+        .device-link {
+            padding: 4px 8px;
+            margin: 4px 0;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .device-link:hover {
+            background: #3498db !important;
+            color: white !important;
+            transform: translateX(4px);
+        }
+        
+        .device-link.current {
+            background: #3498db;
+            color: white;
+        }
+        
+        /* Copyable points in detail panel */
+        .detail-point {
+            padding: 4px;
+            margin: 2px 0;
+            cursor: copy;
+            border-radius: 4px;
+            transition: all 0.2s;
+            color: #495057;
+        }
+        
+        .detail-point:hover {
+            background: #e8f4fd;
+            transform: translateX(2px);
+        }
+        
+        .detail-point::before {
+            content: '• ';
+            color: #6c757d;
+        }
+        
+        /* Partial match differences */
+        .diff-point {
+            padding: 3px 6px;
+            margin: 2px 0;
+            border-radius: 3px;
+            font-size: 11px;
+        }
+        
+        .diff-point.missing {
+            background: #ffebee;
+            color: #c62828;
+        }
+        
+        .diff-point.extra {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+        
+        /* Status */
+        .file-info {
+            padding: 16px;
+            background: var(--surface-color);
+            border-radius: var(--radius-medium);
+            margin-bottom: 24px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-light);
+        }
+
+        .file-info strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .tips-section {
+            background: var(--surface-color);
+            border-radius: var(--radius-medium);
+            padding: 16px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-light);
+            font-size: 11px;
+            line-height: 1.4;
+        }
+
+        .tips-section strong {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        /* Configuration Panel */
+        .config-section {
+            background: var(--surface-color);
+            border-radius: var(--radius-medium);
+            padding: 16px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-light);
+            margin-bottom: 16px;
+        }
+
+        .config-section h4 {
+            margin: 0 0 12px 0;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--primary-color);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .config-group {
+            margin-bottom: 12px;
+        }
+
+        .config-group label {
+            display: block;
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+            font-weight: 500;
+        }
+
+        .config-input {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-small);
+            font-size: 11px;
+            background: var(--background-color);
+            color: var(--text-primary);
+            transition: var(--transition);
+        }
+
+        .config-input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.1);
+        }
+
+        .config-display {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-small);
+            font-size: 11px;
+            background: var(--background-color);
+            color: var(--text-secondary);
+            font-family: monospace;
+        }
+
+        /* Export Section */
+        .export-section {
+            background: var(--surface-color);
+            border-radius: var(--radius-medium);
+            padding: 16px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-light);
+            margin-bottom: 16px;
+        }
+
+        .export-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .btn-export {
+            padding: 8px 12px;
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: var(--radius-small);
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 500;
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .btn-export:hover {
+            background: #2980b9;
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-light);
+        }
+
+        .btn-export.secondary {
+            background: var(--secondary-color);
+        }
+
+        .btn-export.secondary:hover {
+            background: #1a252f;
+        }
+        
+        .stats-mini {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .stat-mini {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            padding: 16px;
+            border-radius: var(--radius-medium);
+            text-align: center;
+            box-shadow: var(--shadow-light);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-mini:hover {
+            box-shadow: var(--shadow-medium);
+            transform: translateY(-2px);
+        }
+
+        .stat-mini::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--accent-color);
+        }
+
+        .stat-mini-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 4px;
+        }
+
+        .stat-mini-label {
+            font-size: 11px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+        
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: var(--surface-color);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            padding: 16px 20px;
+            border-radius: var(--radius-medium);
+            box-shadow: var(--shadow-heavy);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 500;
+            max-width: 350px;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast.success {
+            border-left: 4px solid var(--success-color);
+        }
+
+        .toast.error {
+            border-left: 4px solid var(--error-color);
+        }
+
+        .toast-icon {
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+        }
+
+        .toast.success .toast-icon {
+            color: var(--success-color);
+        }
+
+        .toast.error .toast-icon {
+            color: var(--error-color);
+        }
+        
+        input[type="file"] {
+            display: none;
+        }
+
+        /* SVG Icons */
+        .icon {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+            flex-shrink: 0;
+        }
+
+        .icon-large {
+            width: 20px;
+            height: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- SVG Icon Definitions -->
+    <svg style="display: none">
+        <defs>
+            <symbol id="icon-folder" viewBox="0 0 24 24">
+                <path d="M10 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2h-8l-2-2z"/>
+            </symbol>
+            <symbol id="icon-folder-open" viewBox="0 0 24 24">
+                <path d="M19 20H4c-1.11 0-2-.89-2-2V6c0-1.11.89-2 2-2h6l2 2h7c1.11 0 2 .89 2 2H4v10l1.14-4.58c.25-.99 1.12-1.7 2.15-1.7H21c.46 0 .86.28 1.03.67L19 20z"/>
+            </symbol>
+            <symbol id="icon-device" viewBox="0 0 24 24">
+                <path d="M20 3H4c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2h3l-1 1v2h12v-2l-1-1h3c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 13H4V5h16v11z"/>
+            </symbol>
+            <symbol id="icon-point" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="4"/>
+                <path d="M16 8v5h3v-5zM2 8v5h3v-5z"/>
+            </symbol>
+            <symbol id="icon-tree" viewBox="0 0 24 24">
+                <path d="M22 11V3h-7v3H9V3H2v8h7V8h2v10h4v3h7v-8h-7v3h-2V8h2v3z"/>
+            </symbol>
+            <symbol id="icon-templates" viewBox="0 0 24 24">
+                <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 2 2h16c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>
+            </symbol>
+            <symbol id="icon-expand" viewBox="0 0 24 24">
+                <path d="M12 5.83L15.17 9l1.41-1.41L12 3 7.41 7.59 8.83 9 12 5.83zm0 12.34L8.83 15l-1.41 1.41L12 21l4.59-4.59L15.17 15 12 18.17z"/>
+            </symbol>
+            <symbol id="icon-collapse" viewBox="0 0 24 24">
+                <path d="M7.41 18.59L8.83 20 12 16.83 15.17 20l1.41-1.41L12 14l-4.59 4.59zm9.18-13.18L15.17 4 12 7.17 8.83 4 7.41 5.41 12 10l4.59-4.59z"/>
+            </symbol>
+            <symbol id="icon-close" viewBox="0 0 24 24">
+                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+            </symbol>
+            <symbol id="icon-upload" viewBox="0 0 24 24">
+                <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+            </symbol>
+            <symbol id="icon-chart" viewBox="0 0 24 24">
+                <path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/>
+            </symbol>
+            <symbol id="icon-chevron-right" viewBox="0 0 24 24">
+                <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+            </symbol>
+            <symbol id="icon-chevron-down" viewBox="0 0 24 24">
+                <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+            </symbol>
+            <symbol id="icon-building" viewBox="0 0 24 24">
+                <path d="M12 2L2 7v10c0 5.55 3.84 9.71 9 11 5.16-1.29 9-5.45 9-11V7l-10-5z"/>
+            </symbol>
+            <symbol id="icon-qag-logo" viewBox="0 0 100 100">
+                <!-- QAG Logo - simplified representation -->
+                <circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" stroke-width="4"/>
+                <text x="50" y="40" text-anchor="middle" font-family="Arial, sans-serif" font-weight="bold" font-size="20" fill="currentColor">QAG</text>
+                <text x="50" y="65" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="currentColor">GRAPHICS</text>
+            </symbol>
+        </defs>
+    </svg>
+    <div class="app">
+        <div class="header">
+            <h1>
+                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAATIAAAByCAMAAADnN60vAAAAKlBMVEVHcEz///////////////////////////////////////////////////+LBpLMAAAADXRSTlMAQr+B2ZgQ7yBgMK9wl984bwAABjhJREFUeNrtXd1ytSoMJYHwp3n/1z2floKboqOmzpmC66ajmyhGwlpBoOrFixcvXrx48eL/AOBNzGpUGL4JrwZF4JvQSqkhG5p1fA/GKgU8os+IbyIopZCdVaPB801gimlSowH5JuA7pqMaC8B3kBqXTs1tLBi+B2dLTIMaCbNAYOSYNmog3BcYHzGt1Tggvgn4iGk3ThoQJQJDc8JQQgP5JnyO6cEYAAR9f4npkYSGlQgM+JE9jQAtSy4/YUZINb0TJZcJQwkNEiWXI443ipPLGpPqHShLLhNGEhqi0euJPzBGqilMLpvofExb8x7w9oBR32PanncRr8b0IKnmJHlqP+KHTTjgw6tRPUiqaXgP83nuGEpozLwHc0GhjCQ05I2kNNNBUk2Sd0XAPJLQ+BXCo6GEBvIeSDxy1OfH8zMx9QqNkz13uHadYYSGFumDttDoe0z7F1UoDiI0iPcwib8b9/nxPJ4QGK/QuBdMb6r5TJc99y807IHAkAqWTj+en5afb6qZ4H+/75k6FxqXGW74MW040FHSWO/04/kjw4K251TzssAYfkzbuocEATJ3+vHcwi6UCLF3ofE3iLh3WNerNjsOTLgJvwiNXoca8bD7J8EEPWU6zTOPu2nrBNNAodfRDDpeVs83EZcW3KeUVdYd5oNGMKXd90qXx/kgSBZO6F7H/4/zwUnAANb1JjAS4DAf9CxggNBbgnkuH9QSBjDd9f1f8BKhccwA0JvAOJcPBgkDUKezf6RC4yA18q4zgXHi06N0GbDuddTnWGiQZCcz08vY4jWhIWKAvy0wgBBnf/3To5ZsnIFtgeHJMLObtueD/odGtSe3LRp0BuzY5gKz/z4OpVgqsL24IZ99tN6M4nJgJ2Y0zOG60JAwQOQFuMvSaPNJ1+JVi1VR5AITm7Z1VpsqkIxTgc96uJCPC+FPbOAfHMOlVJN+ZSMIX3msNegILWK1pi6K/MO4tq3qv+8yqkTR/HEcGfX6XthcneMk326EGn2nCQCUHzT3Dq7RZSCkojrVhbTWZDKr1LbL1bXW6FIV2i5LmhMDzCaNGSwGGgDWY6UZNCtiNbG/9OkRpZvazD8EhsmOCqUJ2p9pVbpxyEVdemrIoYEt2+V8bqJhx2WlHqngrCAdp5usLmM2i+9ujGlLGMCE+vWUiKIP761HdQTjxtFx6zKff6xsl/PZqXrXZVDqEdcisBTPu+qG1WXIURHDRaFhhWuofaPjnDfNCHNsWVNpXlM3u+SyXOWpst1zmYEVZusyvXlBABDXCzrty6slzZ5JGb4zpq0lDKD2HnrTE/v1+SnHYfl1x9pCCrvKtg5M+KCD4rKqHoV32dDsUwdPqDQi04WZZmUwVR9i4n3jpsvs9iBlbQtJVdODvkVwxC/EqgchVdlmq0wQ/oLLQomO8NWMCWZkY5+Y42ROGxcvlYN0AZv/1C6D0jViFfYN28qp512m4vRJe7iGqn1kOQ3wWeNc1RILObZUHZmL/YHLmFRte0HKYqtyNpDZZsXgb6aaklG32rg8msXoU4GVzRHRfBq4pEH8EmfFZbCcmpM/f9oys8MFOqoDl1HyS8mpEnwwyeT5HXjb0A0NiKl3xtQSTHt+6LQx37os/wgt2+p52y7L9SjEHRAxZmmPj27DaM7OIS3CMxTCCfWd5w/vulgqB7WUhYbtOZflepRXM5cXZJjx2b245sM2OrVuo70Ct/o7ndGwYP6MTJOkkg2u7bKG7TmXlXqkTt+r+P0ofjkxPbvrj7NX5sNbUzt0MbWl+4rt/rXtstr2pMvqeuj6rcPDGxfThWWdtc8o6/iSQmUEl107NVw2N2xPu0xFUypR1ys8/v834NruJPqrrCNaHDojImz+aQqpAk9fJbUKa+dMiBhzSWzZVlcox6vx14mUz+sk+EF9HPMEz++Th1enyPo084+MPTNz8NFpiV4VxOpuDwqNcHeK7J//9OT5NgN0vkhiHyRhAOh3kcQTQmOVBlO3iySOECQMYN2QiySMhAHmIRdJgIQBFA608U/BJGGA2P96/Aa8iAF09+vxW9ASBlBmRAawIgaAIRkgiBiAhmQAlDCAdSMyALCEAWBIBiARA+CQDKDvwi8ypdtVvy9evHjxYjT8B5GvsSxWBvj8AAAAAElFTkSuQmCC" alt="QAG Logo" class="logo-img">
+                Niagara Navigator
+            </h1>
+            <button class="clear-button" onclick="clearAllData()" title="Clear All Data">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 6H5H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M8 6V4C8 3.46957 8.21071 2.96086 8.58579 2.58579C8.96086 2.21071 9.46957 2 10 2H14C14.5304 2 15.0391 2.21071 15.4142 2.58579C15.7893 2.96086 16 3.46957 16 4V6M19 6V20C19 20.5304 18.7893 21.0391 18.4142 21.4142C18.0391 21.7893 17.5304 22 17 22H7C6.46957 22 5.96086 21.7893 5.58579 21.4142C5.21071 21.0391 5 20.5304 5 20V6H19Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Clear All Data
+            </button>
+            <div class="nav-buttons">
+                <!-- TODO: Update links to actual file paths -->
+                <a href="metasys-explorer.html" class="nav-button">Metasys Explorer</a>
+                <a href="niagara-navigator.html" class="nav-button active">Niagara Navigator</a>
+                <a href="quote-tool.html" class="nav-button">Quote Tool</a>
+            </div>
+        </div>
+
+        <div class="toolbar">
+            <button class="btn primary" onclick="openFile()">
+                <svg class="icon"><use href="#icon-upload"></use></svg>
+                Open CSV
+            </button>
+            <button class="btn" onclick="openCompareFile()" id="compareBogBtn" style="display: none;">
+                <svg class="icon"><use href="#icon-upload"></use></svg>
+                Compare CSV
+            </button>
+            <button class="btn" onclick="clearComparison()" id="clearComparisonBtn" style="display: none;">
+                <svg class="icon"><use href="#icon-close"></use></svg>
+                Clear Comparison
+            </button>
+            <button class="btn active" onclick="showView('tree')">
+                <svg class="icon"><use href="#icon-tree"></use></svg>
+                Tree
+            </button>
+            <button class="btn" onclick="showView('templates')">
+                <svg class="icon"><use href="#icon-templates"></use></svg>
+                Templates
+            </button>
+            <button class="btn" onclick="showView('reflow')">
+                <svg class="icon"><use href="#icon-templates"></use></svg>
+                Reflow Builder
+            </button>
+            <button class="btn" onclick="showView('comparison')" id="comparisonBtn" style="display: none;">
+                <svg class="icon"><use href="#icon-chart"></use></svg>
+                Comparison
+            </button>
+            <button class="btn" onclick="expandAll()">
+                <svg class="icon"><use href="#icon-expand"></use></svg>
+                Expand
+            </button>
+            <button class="btn" onclick="collapseAll()">
+                <svg class="icon"><use href="#icon-collapse"></use></svg>
+                Collapse
+            </button>
+            <button class="btn" onclick="downloadJSON()">
+                <svg class="icon"><use href="#icon-chart"></use></svg>
+                Export JSON
+            </button>
+            <button class="btn" onclick="closeDetail()">
+                <svg class="icon"><use href="#icon-close"></use></svg>
+                Close Detail
+            </button>
+        </div>
+        
+        <div class="main">
+            <div class="sidebar">
+                <div class="file-info">
+                    <input type="file" id="fileInput" accept=".csv" onchange="loadFile(event)">
+                    <input type="file" id="compareFileInput" accept=".csv" onchange="loadCompareFile(event)" style="display: none;">
+                    <strong>File:</strong> <span id="fileName">None</span>
+                    <div id="compareFileInfo" style="display: none; margin-top: 8px;">
+                        <strong>Compare:</strong> <span id="compareFileName">None</span>
+                    </div>
+                </div>
+
+                <div class="stats-mini">
+                    <div class="stat-mini">
+                        <div class="stat-mini-value" id="deviceCount">0</div>
+                        <div class="stat-mini-label">Devices</div>
+                    </div>
+                    <div class="stat-mini">
+                        <div class="stat-mini-value" id="pointCount">0</div>
+                        <div class="stat-mini-label">Points</div>
+                    </div>
+                    <div class="stat-mini">
+                        <div class="stat-mini-value" id="templateCount">0</div>
+                        <div class="stat-mini-label">Templates</div>
+                    </div>
+                    <div class="stat-mini">
+                        <div class="stat-mini-value" id="partialCount">0</div>
+                        <div class="stat-mini-label">Partials</div>
+                    </div>
+                </div>
+
+                <div class="config-section">
+                    <h4>Configuration</h4>
+                    <div class="config-group">
+                        <label for="detectedDrivers">Detected Drivers</label>
+                        <div id="detectedDrivers" class="config-display">None detected</div>
+                    </div>
+                    <div class="config-group">
+                        <label for="serverUrl">Server URL</label>
+                        <input type="text" id="serverUrl" class="config-input" value="{server}" onchange="updateServerUrl()" placeholder="https://your-server.com">
+                    </div>
+                </div>
+
+                <div class="export-section">
+                    <h4>Export Options</h4>
+                    <div class="export-buttons">
+                        <button class="btn-export" onclick="downloadJSON()">
+                            📥 Download JSON
+                        </button>
+                        <button class="btn-export secondary" onclick="copyJSONToClipboard()">
+                            📋 Copy to Clipboard
+                        </button>
+                        <button class="btn-export secondary" onclick="openDashboardBuilder()">
+                            🎨 Open Dashboard Builder
+                        </button>
+                    </div>
+                </div>
+
+                <div class="tips-section">
+                    <strong>Tips</strong>
+                    • Click device → see template<br>
+                    • Click point → copy ORD<br>
+                    • Click devices in detail panel<br>
+                    • Export JSON → dashboard builder
+                </div>
+            </div>
+            
+            <div class="content">
+                <div id="treeView" class="tree"></div>
+                <div id="templatesView" class="templates-report" style="display: none;"></div>
+                <div id="reflowView" class="reflow-builder" style="display: none;">
+                    <div class="reflow-container">
+                        <h2>🔄 Reflow Template Builder</h2>
+                        <p>Create Reflow point map exports from detected templates and partial matches.</p>
+
+                        <div class="reflow-section">
+                            <h3>1. Select Base Template</h3>
+                            <select id="reflowTemplateSelect" class="template-select">
+                                <option value="">Choose a template...</option>
+                            </select>
+
+                            <div id="reflowTemplatePreview" class="template-preview" style="display: none;">
+                                <h4>Selected Template Points:</h4>
+                                <div id="reflowTemplatePoints" class="points-list"></div>
+                            </div>
+                        </div>
+
+                        <div id="reflowPartialMatchesSection" class="reflow-section" style="display: none;">
+                            <h3>2. Include Additional Points (Optional)</h3>
+                            <p>Select partial matches to include additional unique points:</p>
+                            <div id="reflowPartialMatches" class="partial-matches-list"></div>
+                        </div>
+
+                        <div class="reflow-section">
+                            <h3>3. Export Configuration</h3>
+                            <div class="form-group">
+                                <label for="reflowTitle">Title/Filename:</label>
+                                <input type="text" id="reflowTitle" class="form-control" placeholder="Enter title for the export">
+                            </div>
+                        </div>
+
+                        <div class="reflow-section">
+                            <h3>4. Export Files</h3>
+                            <button id="exportReflowCSVBtn" class="btn btn-primary" disabled>
+                                Export Point Map (.csv)
+                            </button>
+                            <button id="exportReflowEquipmentBtn" class="btn btn-secondary" disabled style="margin-left: 10px;">
+                                Export Equipment (.csv)
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div id="comparisonView" class="templates-report" style="display: none;"></div>
+            </div>
+            
+            <div id="detailPanel" class="detail-panel"></div>
+        </div>
+    </div>
+    
+    <div id="toast" class="toast"></div>
+
+    <script>
+        // Global state
+        let appData = null;
+        let compareData = null;
+        let currentView = 'tree';
+        let comparisonActive = false;
+        
+        // File handling
+        function openFile() {
+            document.getElementById('fileInput').click();
+        }
+        
+        async function loadFile(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            document.getElementById('fileName').textContent = file.name;
+
+            try {
+                const csvContent = await loadCSV(file);
+                appData = processCSV(csvContent);
+                updateDisplay();
+                showToast('File loaded successfully');
+
+                // Show compare button after first file is loaded
+                document.getElementById('compareBogBtn').style.display = 'inline-flex';
+
+                // Auto-save after loading file
+                saveToLocalStorage();
+            } catch (error) {
+                console.error('Error:', error);
+                showToast('Error loading file');
+            }
+        }
+
+        function openCompareFile() {
+            document.getElementById('compareFileInput').click();
+        }
+
+        async function loadCompareFile(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            document.getElementById('compareFileName').textContent = file.name;
+
+            try {
+                const csvContent = await loadCSV(file);
+                compareData = processCSV(csvContent);
+                comparisonActive = true;
+
+                // Show comparison UI elements
+                document.getElementById('compareFileInfo').style.display = 'block';
+                document.getElementById('clearComparisonBtn').style.display = 'inline-flex';
+                document.getElementById('comparisonBtn').style.display = 'inline-flex';
+
+                updateDisplay();
+                showToast('Comparison file loaded successfully');
+
+                // Auto-save after loading comparison file
+                saveToLocalStorage();
+            } catch (error) {
+                console.error('Error:', error);
+                showToast('Error loading comparison file');
+            }
+        }
+
+        function clearComparison() {
+            compareData = null;
+            comparisonActive = false;
+
+            // Hide comparison UI elements
+            document.getElementById('compareFileInfo').style.display = 'none';
+            document.getElementById('clearComparisonBtn').style.display = 'none';
+            document.getElementById('comparisonBtn').style.display = 'none';
+
+            // Clear file input
+            document.getElementById('compareFileInput').value = '';
+
+            updateDisplay();
+            showToast('Comparison cleared');
+        }
+        
+        async function loadCSV(file) {
+            if (!file.name.endsWith('.csv')) {
+                throw new Error('Please upload a CSV file');
+            }
+            return await file.text();
+        }
+        
+
+
+        function processCSV(csvContent) {
+            const lines = csvContent.split('\n').filter(line => line.trim());
+            if (lines.length === 0) {
+                throw new Error('Empty CSV file');
+            }
+
+            // Parse CSV - assume first line is header
+            const header = lines[0].split(',');
+            const objectIndex = header.findIndex(col => col.toLowerCase().includes('object'));
+
+            if (objectIndex === -1) {
+                throw new Error('No Object column found in CSV');
+            }
+
+            // Step 1: Build path tree and collect all paths
+            const pathTree = {};
+            const allPaths = new Set();
+            const pointPaths = new Set();
+
+            // Process each CSV row (skip header)
+            for (let i = 1; i < lines.length; i++) {
+                const line = lines[i].trim();
+                if (!line) continue;
+
+                const cols = line.split(',');
+                const pointPath = cols[objectIndex]?.trim();
+
+                if (!pointPath || !pointPath.startsWith('/Drivers/')) continue;
+
+                allPaths.add(pointPath);
+                pointPaths.add(pointPath);
+
+                // Build tree structure
+                const segments = pointPath.split('/').filter(s => s);
+                let currentNode = pathTree;
+                let currentPath = '';
+
+                segments.forEach((segment, index) => {
+                    currentPath += '/' + segment;
+
+                    if (!currentNode[segment]) {
+                        currentNode[segment] = {
+                            name: segment,
+                            path: currentPath,
+                            children: {},
+                            isPoint: false,
+                            points: [],
+                            isEquipment: false
+                        };
+                    }
+
+                    // Mark as point if it's the final segment
+                    if (index === segments.length - 1) {
+                        currentNode[segment].isPoint = true;
+                    }
+
+                    allPaths.add(currentPath);
+                    currentNode = currentNode[segment].children;
+                });
+            }
+
+            console.log('Built path tree with', allPaths.size, 'total paths and', pointPaths.size, 'point paths');
+
+            // Step 2: Identify equipment by working backwards from each point
+            const equipmentMap = new Map();
+            const points = new Map();
+
+            pointPaths.forEach(pointPath => {
+                const segments = pointPath.split('/').filter(s => s);
+                const pointName = segments.pop(); // Remove the point name
+
+                // Determine equipment by working backwards
+                let equipmentPath;
+                let equipmentName;
+
+                if (segments.length > 0 && segments[segments.length - 1] === 'points') {
+                    // If parent is "points", equipment is one level up
+                    segments.pop(); // Remove "points"
+                    if (segments.length > 0) {
+                        equipmentName = segments[segments.length - 1];
+                        equipmentPath = '/' + segments.join('/');
+                    } else {
+                        // Edge case: if we have /points/pointName, skip it
+                        return;
+                    }
+                } else {
+                    // Otherwise, parent folder is the equipment
+                    if (segments.length > 0) {
+                        equipmentName = segments[segments.length - 1];
+                        equipmentPath = '/' + segments.join('/');
+                    } else {
+                        // Edge case: point at root level, skip it
+                        return;
+                    }
+                }
+
+                // Create equipment if it doesn't exist
+                if (!equipmentMap.has(equipmentPath)) {
+                    equipmentMap.set(equipmentPath, {
+                        name: equipmentName,
+                        path: equipmentPath,
+                        points: [],
+                        hasPointsFolder: pointPath.includes('/points/')
+                    });
+                }
+
+                // Create point object
+                const point = {
+                    name: pointName,
+                    path: pointPath,
+                    hasPointsFolder: pointPath.includes('/points/'),
+                    equipmentPath: equipmentPath
+                };
+
+                // Add point to maps
+                points.set(pointPath, point);
+                equipmentMap.get(equipmentPath).points.push(point);
+            });
+
+            console.log('Found', equipmentMap.size, 'equipment and', points.size, 'points');
+
+            // Add equipment paths to allPaths for tree building
+            equipmentMap.forEach((equipment, equipmentPath) => {
+                allPaths.add(equipmentPath);
+                // Also add intermediate paths
+                const segments = equipmentPath.split('/').filter(s => s);
+                let buildPath = '';
+                segments.forEach(segment => {
+                    buildPath += '/' + segment;
+                    allPaths.add(buildPath);
+                });
+            });
+
+            // Convert to arrays and sort
+            const devices = Array.from(equipmentMap.values());
+            devices.forEach(device => {
+                device.points.sort((a, b) => a.name.localeCompare(b.name));
+            });
+
+            // Find templates
+            const templates = findTemplates(devices);
+
+            // Detect driver types from CSV paths
+            const driverTypes = new Set();
+            allPaths.forEach(path => {
+                const driverMatch = path.match(/\/Drivers\/([^\/]+)/);
+                if (driverMatch) {
+                    driverTypes.add(driverMatch[1]);
+                }
+            });
+
+            const detectedDrivers = Array.from(driverTypes);
+            let primaryDriver = 'BacnetNetwork';
+            if (detectedDrivers.includes('BacnetNetwork')) {
+                primaryDriver = 'BacnetNetwork';
+            } else if (detectedDrivers.includes('ModbusNetwork')) {
+                primaryDriver = 'ModbusNetwork';
+            } else if (detectedDrivers.includes('LonNetwork')) {
+                primaryDriver = 'LonNetwork';
+            } else if (detectedDrivers.length > 0) {
+                primaryDriver = detectedDrivers[0];
+            }
+
+            // Update global detectedConfig
+            window.detectedConfig = {
+                driverType: primaryDriver,
+                stationPrefix: 'station:',
+                detectedDrivers: detectedDrivers
+            };
+
+            // Build tree
+            const tree = buildTree(Array.from(allPaths), devices);
+
+            console.log('CSV Processing Results:', {
+                devices: devices.length,
+                points: points.size,
+                templates: templates.exact.length
+            });
+
+            return { devices, points, templates, tree, paths: Array.from(allPaths), detectedConfig: window.detectedConfig };
+        }
+
+        function findTemplates(devices) {
+            const exact = [];
+            const used = new Set();
+            
+            devices.forEach(device => {
+                if (used.has(device.name)) return;
+                
+                const template = {
+                    points: device.points,
+                    devices: [device]
+                };
+                
+                used.add(device.name);
+                
+                devices.forEach(other => {
+                    if (used.has(other.name)) return;
+                    if (device.points.length !== other.points.length) return;
+                    
+                    const match = device.points.every((p, i) => 
+                        p.name === other.points[i].name
+                    );
+                    
+                    if (match) {
+                        template.devices.push(other);
+                        used.add(other.name);
+                    }
+                });
+                
+                exact.push(template);
+            });
+            
+            // Find partials
+            const partial = [];
+            exact.forEach((t1, i) => {
+                exact.forEach((t2, j) => {
+                    if (i >= j) return;
+                    
+                    const matching = t1.points.filter(p1 => 
+                        t2.points.some(p2 => p1.name === p2.name)
+                    ).length;
+                    
+                    const total = Math.max(t1.points.length, t2.points.length);
+                    const percent = Math.round((matching / total) * 100);
+                    
+                    if (percent >= 80 && percent < 100) {
+                        partial.push({ t1, t2, percent, matching, total });
+                    }
+                });
+            });
+            
+            return { exact, partial };
+        }
+        
+        function buildTree(paths, devices) {
+            const root = { name: 'Station', children: [] };
+            
+            paths.forEach(path => {
+                // Include all paths for complete tree structure - don't skip nested paths
+                
+                const parts = path.split('/').filter(p => p);
+                let current = root;
+                
+                parts.forEach(part => {
+                    let child = current.children.find(c => c.name === part);
+                    if (!child) {
+                        child = { name: part, children: [] };
+                        current.children.push(child);
+                    }
+                    current = child;
+                });
+            });
+            
+            // Mark folders with equipment using new generic detection
+            function markHasEquipment(node, path = '') {
+                const currentPath = path ? `${path}/${node.name}` : `/${node.name}`;
+                let hasEquipment = false;
+
+                // Check if this node is equipment (found in our equipment map)
+                const device = devices.find(d => d.path === currentPath);
+                if (device) {
+                    hasEquipment = true;
+                    node.isDirectDevice = true;
+                }
+
+                // Check all children recursively
+                node.children.forEach(child => {
+                    if (markHasEquipment(child, currentPath)) {
+                        hasEquipment = true;
+                    }
+                });
+
+                // Set the flag on this node
+                if (hasEquipment) {
+                    node.hasEquipment = true;
+                }
+
+                return hasEquipment;
+            }
+            
+            markHasEquipment(root);
+            
+            return root;
+        }
+        
+        // Display functions
+        function updateDisplay() {
+            if (!appData) {
+                // Reset counters to 0 when no data
+                document.getElementById('deviceCount').textContent = '0';
+                document.getElementById('pointCount').textContent = '0';
+                document.getElementById('templateCount').textContent = '0';
+                document.getElementById('partialCount').textContent = '0';
+                return;
+            }
+
+            // Update stats (excluding excluded items)
+            const nonExcludedDevices = appData.devices.filter(device => !excludedItems.has(device.path));
+
+            // Handle both Map and array/object for points
+            let pointsArray = [];
+            if (appData.points && typeof appData.points.values === 'function') {
+                pointsArray = Array.from(appData.points.values());
+            } else if (appData.points && Array.isArray(appData.points)) {
+                pointsArray = appData.points;
+            }
+            const nonExcludedPoints = pointsArray.filter(point => point.path && !excludedItems.has(point.path));
+
+            document.getElementById('deviceCount').textContent = nonExcludedDevices.length;
+            document.getElementById('pointCount').textContent = nonExcludedPoints.length;
+            document.getElementById('templateCount').textContent = appData.templates.exact.length;
+            document.getElementById('partialCount').textContent = appData.templates.partial.length;
+
+            // Update detected drivers display
+            updateDetectedDriversDisplay();
+
+            // Update views
+            updateTree();
+            updateTemplates();
+
+            // Update comparison if active
+            if (comparisonActive) {
+                updateComparison();
+            }
+        }
+        
+        function updateTree() {
+            const container = document.getElementById('treeView');
+            container.innerHTML = '';
+            
+            const drivers = appData.tree.children.find(c => c.name === 'Drivers');
+            if (drivers) {
+                renderNode(drivers, container, 0, '');
+            }
+        }
+        
+        function renderNode(node, container, level, path) {
+            const currentPath = path ? `${path}/${node.name}` : `/${node.name}`;
+            const isPoints = node.name === 'points';
+            const device = appData.devices.find(d => d.path === currentPath);
+            const hasChildren = Object.keys(node.children).length > 0;
+
+            // Check if this node is a point (any leaf node that isn't a "points" folder)
+            const isActualPoint = !hasChildren && !isPoints;
+
+            const item = document.createElement('div');
+            item.className = 'tree-item';
+
+            // Mark equipment for styling but don't change behavior
+            if (device) {
+                item.classList.add('device');
+            }
+
+            // Check if this item is excluded
+            const isExcluded = excludedItems.has(currentPath);
+            if (isExcluded) {
+                item.classList.add('excluded');
+            }
+
+            item.style.paddingLeft = `${level * 20}px`;
+
+            // Create the tree item content with expand button if has children
+            let itemContent = '';
+
+            if (hasChildren) {
+                itemContent += `<span class="expand-btn" data-path="${currentPath}">+</span>`;
+            } else {
+                itemContent += `<span class="expand-spacer"></span>`;
+            }
+            
+            // Determine icon based on node type
+            let icon = '📂'; // Default folder icon
+            if (isPoints) {
+                icon = '📊';
+            } else if (device) {
+                icon = '⚙️';
+            } else if (node.isPoint || isActualPoint) {
+                icon = '•'; // Bullet point like in detail pane
+            }
+
+            // Add checkbox for equipment/devices only
+            if (device) {
+                const currentDevicePath = device.path;
+                const isChecked = checkedItems.has(currentDevicePath);
+                itemContent += `<input type="checkbox" class="device-checkbox" data-path="${currentDevicePath.replace(/"/g, '&quot;')}"
+                               onclick="toggleDeviceCheck(event, this.dataset.path)" ${isChecked ? 'checked' : ''}>`;
+            }
+
+            // Add icon and node name
+            if (node.isPoint || isActualPoint) {
+                itemContent += `<span class="node-icon">${icon}</span><span class="node-name point">${node.name}</span>`;
+                item.className += ' point';
+            } else if (device) {
+                itemContent += `<span class="node-icon">${icon}</span><span class="node-name"><strong>${node.name}</strong></span>`;
+            } else {
+                itemContent += `<span class="node-icon">${icon}</span><span class="node-name">${node.name}</span>`;
+            }
+
+            // Add toggle exclude button for containers and equipment (not individual points)
+            if (!isActualPoint) {
+                const buttonIcon = isExcluded ? '👁️' : '×';
+                const buttonTitle = isExcluded ? `Include ${node.name}` : `Exclude ${node.name}`;
+                itemContent += `<button class="delete-btn" onclick="toggleExcludeNode('${currentPath}', '${node.name.replace(/'/g, "\\'")}'); event.stopPropagation();" title="${buttonTitle}">${buttonIcon}</button>`;
+            }
+
+            item.innerHTML = itemContent;
+
+            // Add click handler for node selection
+            item.onclick = (e) => {
+                // Don't select if clicking expand button, checkbox, or delete button
+                if (e.target.classList.contains('expand-btn') || e.target.classList.contains('device-checkbox') || e.target.classList.contains('delete-btn')) {
+                    return;
+                }
+
+                // Remove previous selection
+                document.querySelectorAll('.tree-item.selected').forEach(el =>
+                    el.classList.remove('selected'));
+
+                // Select this item
+                item.classList.add('selected');
+
+                // Show details if this is equipment
+                if (device) {
+                    showDeviceDetail(currentPath);
+                } else if (node.isPoint || isActualPoint) {
+                    // For points, copy ORD
+                    copyORD({name: node.name, path: currentPath});
+                }
+            };
+
+            container.appendChild(item);
+
+            // Create child container if node has children
+            if (hasChildren) {
+                const childContainer = document.createElement('div');
+                childContainer.className = 'tree-children';
+                container.appendChild(childContainer);
+
+                // Add expand button handler
+                const expandBtn = item.querySelector('.expand-btn');
+                expandBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    const isOpen = childContainer.classList.contains('open');
+                    if (isOpen) {
+                        childContainer.classList.remove('open');
+                        expandBtn.textContent = '+';
+                    } else {
+                        childContainer.classList.add('open');
+                        expandBtn.textContent = '-';
+                    }
+                };
+
+                // Render all children
+                Object.values(node.children).forEach(child => {
+                    renderNode(child, childContainer, level + 1, currentPath);
+                });
+            }
+        }
+        
+        function updateTemplates() {
+            const container = document.getElementById('templatesView');
+            const sorted = [...appData.templates.exact].sort((a, b) => b.devices.length - a.devices.length);
+            
+            let html = `
+                <div class="summary-card">
+                    <h2>📋 Templates Report</h2>
+                    <div class="summary-stats">
+                        <div class="stat">
+                            <div class="stat-value">${sorted.length}</div>
+                            <div class="stat-label">Unique Templates</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">${appData.devices.length}</div>
+                            <div class="stat-label">Total Devices</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">${(appData.devices.length / sorted.length).toFixed(1)}</div>
+                            <div class="stat-label">Avg per Template</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            sorted.forEach((t, i) => {
+                const originalIndex = appData.templates.exact.indexOf(t);
+                const percent = ((t.devices.length / appData.devices.length) * 100).toFixed(1);
+
+                html += `
+                    <div class="template-card">
+                        <div class="template-header">
+                            <span class="template-title">Template ${originalIndex + 1}</span>
+                            <span class="template-count">${t.devices.length} devices (${percent}%)</span>
+                        </div>
+                        <div class="template-controls">
+                            <button class="template-control-btn check-all" onclick="checkAllInTemplate(${i})">✓ All</button>
+                            <button class="template-control-btn uncheck-all" onclick="uncheckAllInTemplate(${i})">✗ All</button>
+                        </div>
+                        <div class="device-grid">
+                            ${t.devices.map(d => {
+                                const isChecked = checkedItems.has(d.path);
+                                return `<div class="device-item" title="${d.ord || d.path}">
+                                    <input type="checkbox" class="template-device-checkbox" data-path="${d.path.replace(/"/g, '&quot;')}"
+                                           onclick="toggleDeviceCheck(event, this.dataset.path)" ${isChecked ? 'checked' : ''}>
+                                    ${d.name}
+                                </div>`;
+                            }).join('')}
+                        </div>
+                        <div class="points-summary">
+                            <div class="points-header">
+                                <strong>${t.points.length} Points:</strong>
+                                ${t.points.length > 8 ? `<button class="expand-points-btn" data-template="${i}" onclick="togglePoints(${i})">▶</button>` : ''}
+                            </div>
+                            <div class="points-preview" id="points-preview-${i}">
+                                ${t.points.slice(0, 8).map(p => p.name).join(', ')}
+                                ${t.points.length > 8 ? '...' : ''}
+                            </div>
+                            <div class="points-expanded" id="points-expanded-${i}" style="display: none;">
+                                ${t.points.map(p =>
+                                    `<div class="template-point-item" onclick="copyORD({name:'${p.name}', path:'${p.path}'})" title="Click to copy ORD">• ${p.name}</div>`
+                                ).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+
+        function togglePoints(templateIndex) {
+            const previewEl = document.getElementById(`points-preview-${templateIndex}`);
+            const expandedEl = document.getElementById(`points-expanded-${templateIndex}`);
+            const buttonEl = document.querySelector(`[data-template="${templateIndex}"]`);
+
+            if (expandedEl.style.display === 'none') {
+                // Expand
+                previewEl.style.display = 'none';
+                expandedEl.style.display = 'grid';
+                buttonEl.textContent = '▼';
+            } else {
+                // Collapse
+                previewEl.style.display = 'block';
+                expandedEl.style.display = 'none';
+                buttonEl.textContent = '▶';
+            }
+        }
+
+        function generateComparisonReport() {
+            if (!appData || !compareData) return;
+
+            const primary = appData.devices;
+            const secondary = compareData.devices;
+
+            // Create device maps for easy lookup
+            const primaryMap = new Map(primary.map(d => [d.path, d]));
+            const secondaryMap = new Map(secondary.map(d => [d.path, d]));
+
+            // Find differences
+            const onlyInPrimary = primary.filter(d => !secondaryMap.has(d.path));
+            const onlyInSecondary = secondary.filter(d => !primaryMap.has(d.path));
+            const inBoth = primary.filter(d => secondaryMap.has(d.path));
+
+            // Analyze point differences for common equipment
+            const pointDifferences = [];
+            inBoth.forEach(primaryDevice => {
+                const secondaryDevice = secondaryMap.get(primaryDevice.path);
+                const primaryPoints = new Set(primaryDevice.points.map(p => p.name));
+                const secondaryPoints = new Set(secondaryDevice.points.map(p => p.name));
+
+                const missingInSecondary = primaryDevice.points.filter(p => !secondaryPoints.has(p.name));
+                const missingInPrimary = secondaryDevice.points.filter(p => !primaryPoints.has(p.name));
+
+                if (missingInSecondary.length > 0 || missingInPrimary.length > 0) {
+                    pointDifferences.push({
+                        device: primaryDevice,
+                        missingInSecondary,
+                        missingInPrimary
+                    });
+                }
+            });
+
+            return {
+                onlyInPrimary,
+                onlyInSecondary,
+                inBoth,
+                pointDifferences,
+                primaryName: document.getElementById('fileName').textContent,
+                secondaryName: document.getElementById('compareFileName').textContent
+            };
+        }
+
+        function updateComparison() {
+            const container = document.getElementById('comparisonView');
+            const comparison = generateComparisonReport();
+
+            if (!comparison) {
+                container.innerHTML = '<p>No comparison data available</p>';
+                return;
+            }
+
+            let html = `
+                <div class="summary-card">
+                    <h2>🔍 CSV Comparison Report</h2>
+                    <div style="margin-top: 15px; font-size: 14px;">
+                        <div><strong>Primary:</strong> ${comparison.primaryName}</div>
+                        <div><strong>Compare:</strong> ${comparison.secondaryName}</div>
+                    </div>
+                    <div class="summary-stats">
+                        <div class="stat">
+                            <div class="stat-value">${comparison.onlyInPrimary.length}</div>
+                            <div class="stat-label">Only in Primary</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">${comparison.onlyInSecondary.length}</div>
+                            <div class="stat-label">Only in Compare</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">${comparison.inBoth.length}</div>
+                            <div class="stat-label">In Both</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">${comparison.pointDifferences.length}</div>
+                            <div class="stat-label">Point Differences</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Only in Primary
+            if (comparison.onlyInPrimary.length > 0) {
+                html += `
+                    <div class="template-card">
+                        <div class="template-header">
+                            <span class="template-title">Equipment Only in Primary</span>
+                            <span class="template-count">${comparison.onlyInPrimary.length} devices</span>
+                        </div>
+                        <div class="device-grid">
+                            ${comparison.onlyInPrimary.map(d => `<div class="device-item" style="border-left-color: #e74c3c;">${d.name} (${d.points.length} points)</div>`).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Only in Secondary
+            if (comparison.onlyInSecondary.length > 0) {
+                html += `
+                    <div class="template-card">
+                        <div class="template-header">
+                            <span class="template-title">Equipment Only in Compare</span>
+                            <span class="template-count">${comparison.onlyInSecondary.length} devices</span>
+                        </div>
+                        <div class="device-grid">
+                            ${comparison.onlyInSecondary.map(d => `<div class="device-item" style="border-left-color: #27ae60;">${d.name} (${d.points.length} points)</div>`).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Point Differences
+            if (comparison.pointDifferences.length > 0) {
+                html += `
+                    <div class="template-card">
+                        <div class="template-header">
+                            <span class="template-title">Equipment with Point Differences</span>
+                            <span class="template-count">${comparison.pointDifferences.length} devices</span>
+                        </div>
+                `;
+
+                comparison.pointDifferences.forEach(diff => {
+                    html += `
+                        <div style="margin: 16px 0; padding: 12px; background: #f8f9fa; border-radius: 6px; border-left: 4px solid #f39c12;">
+                            <div style="font-weight: 600; margin-bottom: 8px;">${diff.device.name}</div>
+
+                            ${diff.missingInSecondary.length > 0 ? `
+                                <div style="margin: 8px 0;">
+                                    <div style="font-size: 12px; font-weight: 500; color: #e74c3c; margin-bottom: 4px;">
+                                        Missing in Compare (${diff.missingInSecondary.length}):
+                                    </div>
+                                    <div style="font-size: 11px; color: #666;">
+                                        ${diff.missingInSecondary.map(p => p.name).join(', ')}
+                                    </div>
+                                </div>
+                            ` : ''}
+
+                            ${diff.missingInPrimary.length > 0 ? `
+                                <div style="margin: 8px 0;">
+                                    <div style="font-size: 12px; font-weight: 500; color: #27ae60; margin-bottom: 4px;">
+                                        Missing in Primary (${diff.missingInPrimary.length}):
+                                    </div>
+                                    <div style="font-size: 11px; color: #666;">
+                                        ${diff.missingInPrimary.map(p => p.name).join(', ')}
+                                    </div>
+                                </div>
+                            ` : ''}
+                        </div>
+                    `;
+                });
+
+                html += `</div>`;
+            }
+
+            container.innerHTML = html;
+        }
+        
+        // ORD Translation Engine
+        class ORDTranslator {
+            constructor(config = {}) {
+                this.driverType = config.driverType || 'BacnetNetwork';
+                this.stationPrefix = config.stationPrefix || 'station:';
+                this.serverUrl = config.serverUrl || '{server}';
+            }
+
+            translate(csvPath, pointName = null) {
+                const clean = this.cleanPath(csvPath);
+                const isPoint = pointName !== null;
+                const fullPath = isPoint ? `${clean}/points/${pointName}` : clean;
+
+                return {
+                    csvPath: csvPath,
+                    cleanPath: clean,
+                    ord: this.toORD(fullPath),
+                    obixPath: this.toObixPath(fullPath),
+                    obixValueUrl: this.toObixValueUrl(fullPath),
+                    foxUrl: this.toFoxUrl(fullPath),
+                    isPoint: isPoint
+                };
+            }
+
+            cleanPath(path) {
+                // Remove common extensions
+                let clean = path.replace(/\/(HistoryExt|NumericInterval|AlarmExt|StatusExt)$/, '');
+
+                // Decode URL encoding
+                clean = decodeURIComponent(clean);
+                clean = clean.replace(/%5/g, '/').replace(/%20/g, ' ');
+
+                // Strip prefixes
+                clean = clean.replace(/^\/Eureka/, '');
+                clean = clean.replace(/^\/slot/, '');
+                clean = clean.replace(/^\/config/, '');
+
+                // Handle $ encoding
+                clean = clean.replace(/\$2d/g, '-');
+                clean = clean.replace(/\$20/g, ' ');
+                clean = clean.replace(/\$2f/g, '/');
+                clean = clean.replace(/\$2c/g, ',');
+                clean = clean.replace(/\$2e/g, '.');
+                clean = clean.replace(/\$3a/g, ':');
+
+                return clean;
+            }
+
+            toORD(path) {
+                // Multiple pattern support
+                if (path.startsWith('/devices/')) {
+                    return `${this.stationPrefix}|slot:/Drivers/${this.driverType}${path.substring(8)}`;
+                }
+                if (path.includes('/Drivers/')) {
+                    return `${this.stationPrefix}|slot:${path}`;
+                }
+                return `${this.stationPrefix}|slot:/Config${path}`;
+            }
+
+            toObixPath(path) {
+                const ord = this.toORD(path);
+                return ord.replace(`${this.stationPrefix}|slot:`, '/obix/config');
+            }
+
+            toObixValueUrl(path) {
+                const obixPath = this.toObixPath(path);
+                return `${obixPath}/out/value`;
+            }
+
+            toFoxUrl(path) {
+                const ord = this.toORD(path);
+                return ord.replace(`${this.stationPrefix}|slot:`, `fox://${this.stationPrefix.replace(':', '')}`);
+            }
+        }
+
+        // Global ORD translator instance
+        let ordTranslator = new ORDTranslator();
+        let detectedConfig = {
+            driverType: 'BacnetNetwork',
+            stationPrefix: 'station:',
+            detectedDrivers: []
+        };
+
+        // Auto-detect driver types from CSV content
+
+        // JSON Export functionality
+        function generateFullExport() {
+            if (!appData) {
+                showToast('No data to export');
+                return;
+            }
+
+            const exportData = {
+                metadata: {
+                    exportVersion: "2.0",
+                    exportDate: new Date().toISOString(),
+                    sourceFile: document.getElementById('fileName').textContent,
+                    stationInfo: {
+                        detectedFormat: "auto-detected",
+                        driverType: detectedConfig.driverType,
+                        detectedDrivers: detectedConfig.detectedDrivers,
+                        pointCount: appData.points.size,
+                        equipmentCount: appData.devices.length
+                    }
+                },
+                hierarchy: generateHierarchy(),
+                templates: generateTemplatesExport(),
+                apiConfig: {
+                    recommended: "obix",
+                    endpoints: {
+                        obix: `${document.getElementById('serverUrl')?.value || '{server}'}/obix`,
+                        fox: `${document.getElementById('serverUrl')?.value || '{server}'}:4911`,
+                        rest: `${document.getElementById('serverUrl')?.value || '{server}'}/api`
+                    }
+                }
+            };
+
+            return exportData;
+        }
+
+        function generateHierarchy() {
+            const systems = new Map();
+
+            appData.devices.forEach(device => {
+                const pathParts = device.path.split('/').filter(p => p);
+
+                // Extract system info from path
+                const systemName = pathParts.length >= 3 ? pathParts[2] : 'Unknown';
+
+                if (!systems.has(systemName)) {
+                    systems.set(systemName, {
+                        name: systemName,
+                        path: `/${pathParts.slice(0, 3).join('/')}`,
+                        equipment: []
+                    });
+                }
+
+                // Generate equipment entry with all translation formats
+                const deviceTranslation = ordTranslator.translate(device.path);
+
+                const equipmentEntry = {
+                    id: device.name.toLowerCase().replace(/[^a-z0-9]/g, '_'),
+                    name: device.name,
+                    displayName: device.name,
+                    type: detectEquipmentType(device.name),
+                    template: findTemplateId(device),
+                    paths: {
+                        csv: device.path,
+                        ord: deviceTranslation.ord,
+                        obix: deviceTranslation.obixPath,
+                        fox: deviceTranslation.foxUrl
+                    },
+                    points: device.points.map(point => {
+                        const pointTranslation = ordTranslator.translate(device.path, point.name);
+                        return {
+                            id: `${device.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}_${point.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}`,
+                            name: point.name,
+                            displayName: point.name,
+                            paths: {
+                                csv: point.path,
+                                ord: pointTranslation.ord,
+                                obix: pointTranslation.obixPath,
+                                obixValue: pointTranslation.obixValueUrl
+                            },
+                            metadata: {
+                                unit: detectUnit(point.name),
+                                precision: 1,
+                                writable: detectWritable(point.name)
+                            }
+                        };
+                    })
+                };
+
+                systems.get(systemName).equipment.push(equipmentEntry);
+            });
+
+            return {
+                building: "Station",
+                systems: Array.from(systems.values())
+            };
+        }
+
+        function generateTemplatesExport() {
+            return appData.templates.exact.map((template, index) => ({
+                id: `template_${index + 1}`,
+                name: `Template ${index + 1}`,
+                pointSignatures: template.points.map(p => p.name),
+                instanceCount: template.devices.length,
+                instances: template.devices.map(d => d.name)
+            }));
+        }
+
+        function detectEquipmentType(name) {
+            const name_lower = name.toLowerCase();
+            if (name_lower.includes('ahu')) return 'AHU';
+            if (name_lower.includes('vav')) return 'VAV';
+            if (name_lower.includes('chiller')) return 'Chiller';
+            if (name_lower.includes('boiler')) return 'Boiler';
+            if (name_lower.includes('pump')) return 'Pump';
+            if (name_lower.includes('fan')) return 'Fan';
+            return 'Generic';
+        }
+
+        function detectUnit(pointName) {
+            const name_lower = pointName.toLowerCase();
+            if (name_lower.includes('temp')) return '°F';
+            if (name_lower.includes('pressure')) return 'PSI';
+            if (name_lower.includes('humidity')) return '%RH';
+            if (name_lower.includes('flow')) return 'CFM';
+            if (name_lower.includes('position') || name_lower.includes('damper')) return '%';
+            return '';
+        }
+
+        function detectWritable(pointName) {
+            const name_lower = pointName.toLowerCase();
+            return name_lower.includes('setpoint') ||
+                   name_lower.includes('command') ||
+                   name_lower.includes('override') ||
+                   name_lower.includes('position');
+        }
+
+        function findTemplateId(device) {
+            const templateIndex = appData.templates.exact.findIndex(t =>
+                t.devices.some(d => d.path === device.path)
+            );
+            return templateIndex >= 0 ? `template_${templateIndex + 1}` : null;
+        }
+
+        function downloadJSON() {
+            const exportData = generateFullExport();
+            const json = JSON.stringify(exportData, null, 2);
+
+            const blob = new Blob([json], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `niagara_export_${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            showToast('JSON export downloaded');
+        }
+
+        function copyJSONToClipboard() {
+            const exportData = generateFullExport();
+            const json = JSON.stringify(exportData, null, 2);
+
+            const textarea = document.createElement('textarea');
+            textarea.value = json;
+            textarea.style.position = 'absolute';
+            textarea.style.left = '-9999px';
+            document.body.appendChild(textarea);
+            textarea.select();
+
+            try {
+                document.execCommand('copy');
+                showToast('JSON copied to clipboard');
+            } catch (err) {
+                showToast('Copy failed');
+            }
+
+            document.body.removeChild(textarea);
+        }
+
+
+
+        function updateServerUrl() {
+            const serverUrl = document.getElementById('serverUrl').value;
+
+            // Update the ORD translator with new server URL but keep detected config
+            ordTranslator = new ORDTranslator({
+                driverType: detectedConfig.driverType,
+                stationPrefix: detectedConfig.stationPrefix,
+                serverUrl: serverUrl
+            });
+
+            // Auto-save after updating server URL
+            saveToLocalStorage();
+        }
+
+        function updateDetectedDriversDisplay() {
+            const displayElement = document.getElementById('detectedDrivers');
+            if (detectedConfig.detectedDrivers.length > 0) {
+                displayElement.textContent = detectedConfig.detectedDrivers.join(', ');
+                displayElement.style.color = 'var(--success-color)';
+            } else {
+                displayElement.textContent = 'None detected';
+                displayElement.style.color = 'var(--text-muted)';
+            }
+        }
+
+        function openDashboardBuilder() {
+            const exportData = generateFullExport();
+            if (!exportData) return;
+
+            // Create a new window/tab with the dashboard builder
+            const json = JSON.stringify(exportData, null, 2);
+            const url = 'dashboard-builder.html?data=' + encodeURIComponent(btoa(json));
+            window.open(url, '_blank');
+        }
+
+        // Interaction functions
+        function copyORD(point) {
+            // Generate relativized ORD for use in Niagara graphics
+            let relativizedORD;
+
+            // Check for FCU points first (e.g., /VRF_System/points/FCU1_1/ac_StartStopStatus_1)
+            if (point.path.includes('/points/') && /\/points\/FCU\d+_\d+\//.test(point.path)) {
+                // FCU devices: points are directly under the FCU unit
+                // e.g., /VRF_System/points/FCU1_1/ac_StartStopStatus_1 → slot:ac_StartStopStatus_1
+                relativizedORD = `slot:${point.name}`;
+            } else {
+                // Determine the device this point belongs to
+                let devicePath;
+                if (point.parentDevicePath) {
+                    // For nested points like RTU1_Points, use parent device
+                    devicePath = point.parentDevicePath;
+                } else if (point.path.includes('/points/')) {
+                    devicePath = point.path.split('/points/')[0];
+                } else {
+                    devicePath = point.path.substring(0, point.path.lastIndexOf('/'));
+                }
+
+                // Find the device to understand its structure
+                const device = appData.devices.find(d => d.path === devicePath);
+
+                if (device && device.isVRFUnit) {
+                    // VRF FCU devices: points are directly under the device
+                    // e.g., /VRF_System/points/FCU1_1/ac_StartStopStatus_1 → slot:ac_StartStopStatus_1
+                    relativizedORD = `slot:${point.name}`;
+                } else if (point.pointFolder) {
+                    // Point is in a nested folder like RTU1_Points
+                    // e.g., /RTU$2d1/points/RTU1_Points/Alarm$20Status → slot:points/RTU1_Points/Alarm$20Status
+                    relativizedORD = `slot:points/${point.pointFolder}/${point.name}`;
+                } else if (point.hasPointsFolder || point.path.includes('/points/')) {
+                    // Point is in a standard points folder
+                    // e.g., /DOAS$2d1/points/pointName → slot:points/pointName
+                    relativizedORD = `slot:points/${point.name}`;
+                } else {
+                    // Point is directly under the equipment (rare case)
+                    relativizedORD = `slot:${point.name}`;
+                }
+            }
+
+            // Create textarea, select, copy, remove
+            const textarea = document.createElement('textarea');
+            textarea.value = relativizedORD;
+            textarea.style.position = 'absolute';
+            textarea.style.left = '-9999px';
+            document.body.appendChild(textarea);
+            textarea.select();
+
+            try {
+                document.execCommand('copy');
+                showToast(`Copied: ${relativizedORD}`);
+            } catch (err) {
+                showToast('Copy failed');
+            }
+
+            document.body.removeChild(textarea);
+        }
+
+        // Helper function for copying points from detail panel
+        function copyPointFromDetail(pointName, hasPointsFolder, devicePath, pointFolder = '') {
+            const point = {
+                name: pointName,
+                hasPointsFolder: hasPointsFolder,
+                pointFolder: pointFolder || null,
+                path: hasPointsFolder ? `${devicePath}/points/${pointName}` : `${devicePath}/${pointName}`
+            };
+            copyORD(point);
+        }
+        
+        function showDeviceDetail(path) {
+            const device = appData.devices.find(d => d.path === path);
+            if (!device) return;
+            
+            const template = appData.templates.exact.find(t => 
+                t.devices.some(d => d.path === path)
+            );
+            
+            const partials = appData.templates.partial.filter(p => 
+                p.t1 === template || p.t2 === template
+            );
+            
+            let html = `
+                <div class="detail-header">
+                    <h3>⚙️ ${device.name}</h3>
+                    <div style="font-size: 12px; opacity: 0.9;">${device.path}</div>
+                </div>
+            `;
+            
+            if (template) {
+                const idx = appData.templates.exact.indexOf(template) + 1;
+                html += `
+                    <div class="detail-section">
+                        <h4>Template ${idx}</h4>
+                        <div>${template.devices.length} devices (click to navigate):</div>
+                        ${template.devices.map(d => 
+                            `<div class="device-link ${d.path === path ? 'current' : ''}" 
+                                 onclick="showDeviceDetail('${d.path}')"
+                                 style="background: ${d.path === path ? '#3498db' : '#f8f9fa'}; 
+                                        color: ${d.path === path ? 'white' : 'inherit'};">
+                                ${d.name}
+                            </div>`
+                        ).join('')}
+                    </div>
+                    
+                    <div class="detail-section">
+                        <h4>Points (${template.points.length}) - Click to copy</h4>
+                        ${template.points.map(p =>
+                            `<div class="detail-point"
+                                  onclick="copyPointFromDetail('${p.name.replace(/'/g, "\\'")}', ${p.hasPointsFolder}, '${device.path}', '${(p.pointFolder || '').replace(/'/g, "\\'")}')"
+                                  title="Click to copy: slot:${device.isVRFUnit ? '' : (p.hasPointsFolder ? (p.pointFolder ? `points/${p.pointFolder}/` : 'points/') : '')}${p.name}">
+                                ${p.name}
+                            </div>`
+                        ).join('')}
+                    </div>
+                `;
+                
+                if (partials.length > 0) {
+                    html += `
+                        <div class="detail-section">
+                            <h4>Partial Matches</h4>
+                            ${partials.map(p => {
+                                const other = p.t1 === template ? p.t2 : p.t1;
+                                const otherIdx = appData.templates.exact.indexOf(other) + 1;
+                                
+                                // Find differences
+                                const mainPoints = template.points;
+                                const otherPoints = other.points;
+                                
+                                const missing = mainPoints.filter(mp => 
+                                    !otherPoints.some(op => op.name === mp.name)
+                                );
+                                
+                                const extra = otherPoints.filter(op => 
+                                    !mainPoints.some(mp => mp.name === op.name)
+                                );
+                                
+                                return `
+                                    <div style="padding: 8px; margin: 8px 0; background: white; border-radius: 4px; border: 1px solid #dee2e6;">
+                                        <div style="font-weight: bold; color: #2c3e50;">Template ${otherIdx}: ${p.percent}% match</div>
+                                        <div style="font-size: 11px; color: #6c757d; margin: 4px 0;">${p.matching} of ${p.total} points match</div>
+                                        
+                                        <div style="margin-top: 8px; font-size: 11px; color: #6c757d;">
+                                            <strong>Devices (${other.devices.length}):</strong>
+                                            ${other.devices.slice(0, 3).map(d => d.name).join(', ')}${other.devices.length > 3 ? '...' : ''}
+                                        </div>
+                                        
+                                        ${missing.length > 0 ? `
+                                            <div style="margin-top: 8px;">
+                                                <div style="font-size: 11px; font-weight: bold; color: #c62828;">Missing from Template ${otherIdx}:</div>
+                                                ${missing.map(m => 
+                                                    `<div class="diff-point missing">• ${m.name}</div>`
+                                                ).join('')}
+                                            </div>
+                                        ` : ''}
+                                        
+                                        ${extra.length > 0 ? `
+                                            <div style="margin-top: 8px;">
+                                                <div style="font-size: 11px; font-weight: bold; color: #2e7d32;">Extra in Template ${otherIdx}:</div>
+                                                ${extra.map(e => 
+                                                    `<div class="diff-point extra">• ${e.name}</div>`
+                                                ).join('')}
+                                            </div>
+                                        ` : ''}
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    `;
+                }
+            }
+            
+            document.getElementById('detailPanel').innerHTML = html;
+            document.getElementById('detailPanel').classList.add('show');
+        }
+        
+        function showView(view) {
+            currentView = view;
+            document.querySelectorAll('.toolbar .btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // Hide all views first
+            document.getElementById('treeView').style.display = 'none';
+            document.getElementById('templatesView').style.display = 'none';
+            document.getElementById('reflowView').style.display = 'none';
+            document.getElementById('comparisonView').style.display = 'none';
+
+            // Show selected view
+            if (view === 'tree') {
+                document.getElementById('treeView').style.display = 'block';
+            } else if (view === 'templates') {
+                document.getElementById('templatesView').style.display = 'block';
+                closeDetail();
+            } else if (view === 'reflow') {
+                document.getElementById('reflowView').style.display = 'block';
+                closeDetail();
+                initializeReflowBuilder();
+            } else if (view === 'comparison') {
+                document.getElementById('comparisonView').style.display = 'block';
+                closeDetail();
+                if (comparisonActive) {
+                    updateComparison();
+                }
+            }
+        }
+        
+        function expandAll() {
+            document.querySelectorAll('.tree-children').forEach(el => {
+                el.classList.add('open');
+            });
+        }
+        
+        function collapseAll() {
+            document.querySelectorAll('.tree-children').forEach(el => {
+                el.classList.remove('open');
+            });
+        }
+        
+        function closeDetail() {
+            document.getElementById('detailPanel').classList.remove('show');
+        }
+        
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2000);
+        }
+
+        console.log('Niagara Navigator - CSV Point Explorer');
+
+        // === CHECKBOX FUNCTIONALITY ===
+        let checkedItems = new Set(); // Track checked equipment/devices
+        let excludedItems = new Set(); // Track excluded equipment/devices
+
+        function toggleDeviceCheck(event, path) {
+            event.stopPropagation();
+            if (checkedItems.has(path)) {
+                checkedItems.delete(path);
+            } else {
+                checkedItems.add(path);
+            }
+            updateCheckboxDisplay();
+            updateCheckedCounter();
+            saveToLocalStorage();
+        }
+
+        function checkAllInTemplate(templateIndex) {
+            const template = [...appData.templates.exact].sort((a, b) => b.devices.length - a.devices.length)[templateIndex];
+            template.devices.forEach(device => {
+                checkedItems.add(device.path);
+            });
+            updateCheckboxDisplay();
+            updateCheckedCounter();
+            saveToLocalStorage();
+        }
+
+        function uncheckAllInTemplate(templateIndex) {
+            const template = [...appData.templates.exact].sort((a, b) => b.devices.length - a.devices.length)[templateIndex];
+            template.devices.forEach(device => {
+                checkedItems.delete(device.path);
+            });
+            updateCheckboxDisplay();
+            updateCheckedCounter();
+            saveToLocalStorage();
+        }
+
+        function checkAllDevices() {
+            if (!appData || !appData.devices) return;
+
+            appData.devices.forEach(device => {
+                checkedItems.add(device.path);
+            });
+
+            updateCheckboxDisplay();
+            updateCheckedCounter();
+            saveToLocalStorage();
+        }
+
+        function uncheckAllDevices() {
+            checkedItems.clear();
+            updateCheckboxDisplay();
+            updateCheckedCounter();
+            saveToLocalStorage();
+        }
+
+        // Delete functionality
+        function toggleExcludeNode(nodePath, nodeName) {
+            // Prevent exclusion of critical root nodes
+            if (nodePath === '/Drivers' || nodePath === 'Drivers') {
+                showToast('Cannot exclude the Drivers root node', 'error');
+                return;
+            }
+
+            const isCurrentlyExcluded = excludedItems.has(nodePath);
+            const action = isCurrentlyExcluded ? 'Include' : 'Exclude';
+
+            // Count affected items for confirmation
+            const affectedItems = countAffectedItems(nodePath);
+
+            const confirmMessage = `${action} "${nodeName}" and all its children?\n\nThis will ${action.toLowerCase()}:\n- ${affectedItems.devices} device(s)\n- ${affectedItems.points} point(s)\n\nFrom templates and counts.`;
+
+            if (!confirm(confirmMessage)) {
+                return;
+            }
+
+            if (isCurrentlyExcluded) {
+                // Include the item and all its children
+                includeItemRecursively(nodePath);
+            } else {
+                // Exclude the item and all its children
+                excludeItemRecursively(nodePath);
+                // Remove from checked items when excluding
+                clearCheckedItemsForPath(nodePath);
+            }
+
+            // Rebuild templates
+            rebuildTemplates();
+
+            // Update all displays
+            updateDisplay();
+            updateTree();
+            updateTemplates();
+            updateCheckboxDisplay();
+            updateCheckedCounter();
+
+            // Close detail panel if showing excluded device
+            const detailPanel = document.getElementById('detailPanel');
+            if (detailPanel && detailPanel.classList.contains('show')) {
+                detailPanel.classList.remove('show');
+            }
+
+            // Save to localStorage
+            saveToLocalStorage();
+
+            const statusMessage = isCurrentlyExcluded ? 'Included' : 'Excluded';
+            showToast(`${statusMessage} "${nodeName}" and ${affectedItems.devices + affectedItems.points} associated items`, 'success');
+        }
+
+        function excludeItemRecursively(nodePath) {
+            // Add the main path
+            excludedItems.add(nodePath);
+
+            // Add all devices that start with this path
+            appData.devices.forEach(device => {
+                if (device.path.startsWith(nodePath) || device.path === nodePath) {
+                    excludedItems.add(device.path);
+                }
+            });
+
+            // Add all points that start with this path
+            if (appData.points) {
+                if (typeof appData.points.forEach === 'function') {
+                    appData.points.forEach(point => {
+                        if (point.path && (point.path.startsWith(nodePath) || point.path === nodePath)) {
+                            excludedItems.add(point.path);
+                        }
+                    });
+                } else if (typeof appData.points.values === 'function') {
+                    Array.from(appData.points.values()).forEach(point => {
+                        if (point.path && (point.path.startsWith(nodePath) || point.path === nodePath)) {
+                            excludedItems.add(point.path);
+                        }
+                    });
+                }
+            }
+        }
+
+        function includeItemRecursively(nodePath) {
+            // Remove the main path
+            excludedItems.delete(nodePath);
+
+            // Remove all devices that start with this path
+            appData.devices.forEach(device => {
+                if (device.path.startsWith(nodePath) || device.path === nodePath) {
+                    excludedItems.delete(device.path);
+                }
+            });
+
+            // Remove all points that start with this path
+            if (appData.points) {
+                if (typeof appData.points.forEach === 'function') {
+                    appData.points.forEach(point => {
+                        if (point.path && (point.path.startsWith(nodePath) || point.path === nodePath)) {
+                            excludedItems.delete(point.path);
+                        }
+                    });
+                } else if (typeof appData.points.values === 'function') {
+                    Array.from(appData.points.values()).forEach(point => {
+                        if (point.path && (point.path.startsWith(nodePath) || point.path === nodePath)) {
+                            excludedItems.delete(point.path);
+                        }
+                    });
+                }
+            }
+        }
+
+        function countAffectedItems(nodePath) {
+            let devices = 0;
+            let points = 0;
+
+            // Count affected devices
+            appData.devices.forEach(device => {
+                if (device.path.startsWith(nodePath) || device.path === nodePath) {
+                    devices++;
+                }
+            });
+
+            // Count affected points
+            if (appData.points) {
+                if (typeof appData.points.forEach === 'function') {
+                    appData.points.forEach(point => {
+                        if (point.path && (point.path.startsWith(nodePath) || point.path === nodePath)) {
+                            points++;
+                        }
+                    });
+                } else if (typeof appData.points.values === 'function') {
+                    Array.from(appData.points.values()).forEach(point => {
+                        if (point.path && (point.path.startsWith(nodePath) || point.path === nodePath)) {
+                            points++;
+                        }
+                    });
+                }
+            }
+
+            return { devices, points };
+        }
+
+        function clearCheckedItemsForPath(nodePath) {
+            const itemsToRemove = [];
+            checkedItems.forEach(item => {
+                if (item.startsWith(nodePath) || item === nodePath) {
+                    itemsToRemove.push(item);
+                }
+            });
+            itemsToRemove.forEach(item => checkedItems.delete(item));
+        }
+
+
+        function rebuildTemplates() {
+            if (!appData.devices || appData.devices.length === 0) {
+                appData.templates = { exact: [], partial: [] };
+                return;
+            }
+
+            // Filter out excluded devices before building templates
+            const nonExcludedDevices = appData.devices.filter(device => !excludedItems.has(device.path));
+
+            if (nonExcludedDevices.length === 0) {
+                appData.templates = { exact: [], partial: [] };
+                return;
+            }
+
+            // Rebuild templates using the existing findTemplates function with non-excluded devices
+            const newTemplates = findTemplates(nonExcludedDevices);
+            appData.templates = {
+                exact: newTemplates.exact,
+                partial: newTemplates.partial
+            };
+        }
+
+        function updateCheckboxDisplay() {
+            // Update tree view checkboxes
+            document.querySelectorAll('.device-checkbox').forEach(checkbox => {
+                const path = checkbox.dataset.path;
+                checkbox.checked = checkedItems.has(path);
+
+                // Update tree item visual state
+                const treeItem = checkbox.closest('.tree-item');
+                if (treeItem) {
+                    if (checkedItems.has(path)) {
+                        treeItem.classList.add('device-checked');
+                    } else {
+                        treeItem.classList.remove('device-checked');
+                    }
+                }
+            });
+
+            // Update template view checkboxes
+            document.querySelectorAll('.template-device-checkbox').forEach(checkbox => {
+                const path = checkbox.dataset.path;
+                checkbox.checked = checkedItems.has(path);
+            });
+        }
+
+        function updateCheckedCounter() {
+            // Update any checked counter displays if they exist
+            const counter = document.getElementById('checkedCounter');
+            if (counter) {
+                counter.textContent = `${checkedItems.size} checked`;
+            }
+        }
+
+        function saveToLocalStorage() {
+            localStorage.setItem('niagaraNavigatorCheckedItems', JSON.stringify([...checkedItems]));
+            localStorage.setItem('niagaraNavigatorExcludedItems', JSON.stringify([...excludedItems]));
+        }
+
+        function loadCheckboxesFromLocalStorage() {
+            const saved = localStorage.getItem('niagaraNavigatorCheckedItems');
+            if (saved) {
+                checkedItems = new Set(JSON.parse(saved));
+                updateCheckboxDisplay();
+                updateCheckedCounter();
+            }
+
+            const savedExcluded = localStorage.getItem('niagaraNavigatorExcludedItems');
+            if (savedExcluded) {
+                excludedItems = new Set(JSON.parse(savedExcluded));
+            }
+        }
+
+        // === REFLOW BUILDER FUNCTIONALITY ===
+        let selectedReflowTemplate = null;
+        let selectedReflowPartialMatches = new Set();
+        let reflowListenersSetup = false;
+
+        function initializeReflowBuilder() {
+            populateReflowTemplateDropdown();
+            setupReflowEventListeners();
+        }
+
+        function populateReflowTemplateDropdown() {
+            const select = document.getElementById('reflowTemplateSelect');
+            const sorted = [...appData.templates.exact].sort((a, b) => b.devices.length - a.devices.length);
+
+            // Clear existing options except the first one
+            select.innerHTML = '<option value="">Choose a template...</option>';
+
+            sorted.forEach((template, index) => {
+                const option = document.createElement('option');
+                option.value = index;
+                // Use original template number (consistent with Templates tab)
+                const originalTemplateNumber = appData.templates.exact.indexOf(template) + 1;
+                option.textContent = `Template ${originalTemplateNumber} (${template.devices.length} devices, ${template.points.length} points)`;
+                select.appendChild(option);
+            });
+        }
+
+        function setupReflowEventListeners() {
+            if (reflowListenersSetup) return; // Prevent duplicate listeners
+
+            const templateSelect = document.getElementById('reflowTemplateSelect');
+            const reflowTitle = document.getElementById('reflowTitle');
+            const exportReflowCSVBtn = document.getElementById('exportReflowCSVBtn');
+            const exportReflowEquipmentBtn = document.getElementById('exportReflowEquipmentBtn');
+
+            templateSelect.addEventListener('change', onReflowTemplateSelected);
+            reflowTitle.addEventListener('input', function() {
+                updateReflowExportButtons();
+                saveToLocalStorage();
+            });
+            exportReflowCSVBtn.addEventListener('click', exportReflowCSV);
+            exportReflowEquipmentBtn.addEventListener('click', exportReflowEquipmentCSV);
+
+            reflowListenersSetup = true;
+        }
+
+        function onReflowTemplateSelected() {
+            const select = document.getElementById('reflowTemplateSelect');
+            const templateIndex = parseInt(select.value);
+
+            // Clear any previously selected partial matches
+            selectedReflowPartialMatches.clear();
+
+            if (isNaN(templateIndex)) {
+                selectedReflowTemplate = null;
+                document.getElementById('reflowTemplatePreview').style.display = 'none';
+                document.getElementById('reflowPartialMatchesSection').style.display = 'none';
+                updateReflowExportButtons();
+                return;
+            }
+
+            const sorted = [...appData.templates.exact].sort((a, b) => b.devices.length - a.devices.length);
+            selectedReflowTemplate = sorted[templateIndex];
+
+            displayReflowTemplatePreview();
+            displayReflowPartialMatches();
+            updateReflowExportButtons();
+        }
+
+        function displayReflowTemplatePreview() {
+            const preview = document.getElementById('reflowTemplatePreview');
+            const pointsContainer = document.getElementById('reflowTemplatePoints');
+
+            if (!selectedReflowTemplate) {
+                preview.style.display = 'none';
+                return;
+            }
+
+            preview.style.display = 'block';
+            pointsContainer.innerHTML = selectedReflowTemplate.points
+                .map(p => `<div class="point-item">${p.name}</div>`)
+                .join('');
+        }
+
+        function displayReflowPartialMatches() {
+            const section = document.getElementById('reflowPartialMatchesSection');
+            const container = document.getElementById('reflowPartialMatches');
+
+            if (!selectedReflowTemplate) {
+                section.style.display = 'none';
+                return;
+            }
+
+            const partials = appData.templates.partial.filter(p =>
+                p.t1 === selectedReflowTemplate || p.t2 === selectedReflowTemplate
+            );
+
+            if (partials.length === 0) {
+                section.style.display = 'none';
+                return;
+            }
+
+            let html = '';
+
+            partials.forEach((partial, index) => {
+                const otherTemplate = partial.t1 === selectedReflowTemplate ? partial.t2 : partial.t1;
+                const matchId = `reflow_partial_${index}`;
+
+                // Find the template number for this partial match (consistent with Templates tab)
+                const templateNumber = appData.templates.exact.indexOf(otherTemplate) + 1;
+
+                html += `
+                    <div class="partial-match-item">
+                        <div class="partial-match-info">
+                            <div>
+                                <strong>Template ${templateNumber} with ${otherTemplate.devices.length} devices</strong>
+                                <span class="partial-match-similarity">(${partial.percent}% match)</span>
+                            </div>
+                            <div style="font-size: 12px; color: var(--text-secondary);">
+                                ${partial.matching}/${partial.total} points match
+                            </div>
+                        </div>
+                        <label style="display: flex; align-items: center; gap: 8px; margin-top: 10px;">
+                            <input type="checkbox" id="${matchId}" onchange="onReflowPartialMatchToggle(${index})">
+                            Include additional unique points from this template
+                        </label>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+            section.style.display = 'block';
+        }
+
+        function onReflowPartialMatchToggle(partialIndex) {
+            const checkbox = document.getElementById(`reflow_partial_${partialIndex}`);
+
+            if (checkbox.checked) {
+                selectedReflowPartialMatches.add(partialIndex);
+            } else {
+                selectedReflowPartialMatches.delete(partialIndex);
+            }
+
+            updateReflowExportButtons();
+        }
+
+        function updateReflowExportButtons() {
+            const exportReflowCSVBtn = document.getElementById('exportReflowCSVBtn');
+            const exportReflowEquipmentBtn = document.getElementById('exportReflowEquipmentBtn');
+            const reflowTitle = document.getElementById('reflowTitle').value.trim();
+
+            const shouldEnable = selectedReflowTemplate && reflowTitle;
+            exportReflowCSVBtn.disabled = !shouldEnable;
+            exportReflowEquipmentBtn.disabled = !shouldEnable;
+        }
+
+        function getReflowPoints() {
+            if (!selectedReflowTemplate) return [];
+
+            // Start with all points from selected base template
+            const allPoints = [...selectedReflowTemplate.points];
+            console.log(`Base template points: ${allPoints.map(p => p.name).join(', ')}`);
+
+            // Add only NEW points from selected partial matches (no duplicates)
+            const partials = appData.templates.partial.filter(p =>
+                p.t1 === selectedReflowTemplate || p.t2 === selectedReflowTemplate
+            );
+
+            selectedReflowPartialMatches.forEach(partialIndex => {
+                const partial = partials[partialIndex];
+                const otherTemplate = partial.t1 === selectedReflowTemplate ? partial.t2 : partial.t1;
+                console.log(`Adding from partial template with ${otherTemplate.points.length} points`);
+
+                // Only add points that don't already exist in the base template
+                otherTemplate.points.forEach(point => {
+                    if (!allPoints.some(existing => existing.name === point.name)) {
+                        console.log(`Adding new point: ${point.name}`);
+                        allPoints.push(point);
+                    } else {
+                        console.log(`Skipping duplicate point: ${point.name}`);
+                    }
+                });
+            });
+
+            // Sort points alphabetically
+            allPoints.sort((a, b) => a.name.localeCompare(b.name));
+
+            console.log(`Final unique points (${allPoints.length}): ${allPoints.map(p => p.name).join(', ')}`);
+            return allPoints;
+        }
+
+        function exportReflowCSV() {
+            if (!selectedReflowTemplate) return;
+
+            const reflowTitle = document.getElementById('reflowTitle').value.trim();
+
+            if (!reflowTitle) return;
+
+            const allPoints = getReflowPoints();
+            const csv = generateReflowCSV(allPoints);
+            downloadReflowCSV(csv, `${reflowTitle}.csv`);
+        }
+
+        function exportReflowEquipmentCSV() {
+            if (!selectedReflowTemplate) return;
+
+            const reflowTitle = document.getElementById('reflowTitle').value.trim();
+
+            if (!reflowTitle) return;
+
+            const csv = generateReflowEquipmentCSV();
+            downloadReflowCSV(csv, `${reflowTitle}_equipment.csv`);
+        }
+
+        function generateReflowCSV(points) {
+            let csv = 'Display Name,Niagara Point,Group,Featured,Hidden\n';
+
+            points.forEach(point => {
+                // Display Name: blank, Niagara Point: point name, Group: blank, Featured: false, Hidden: false
+                csv += `,${point.name},,false,false\n`;
+            });
+
+            return csv;
+        }
+
+        function generateReflowEquipmentCSV() {
+            // Extract unique equipment from the selected templates
+            const equipmentSet = new Set();
+
+            // Add equipment from base template
+            if (selectedReflowTemplate && selectedReflowTemplate.devices) {
+                selectedReflowTemplate.devices.forEach(device => {
+                    equipmentSet.add(device.name);
+                });
+            }
+
+            // Add equipment from partial matches
+            const partials = appData.templates.partial.filter(p =>
+                p.t1 === selectedReflowTemplate || p.t2 === selectedReflowTemplate
+            );
+
+            selectedReflowPartialMatches.forEach(partialIndex => {
+                const partial = partials[partialIndex];
+                const otherTemplate = partial.t1 === selectedReflowTemplate ? partial.t2 : partial.t1;
+
+                if (otherTemplate && otherTemplate.devices) {
+                    otherTemplate.devices.forEach(device => {
+                        equipmentSet.add(device.name);
+                    });
+                }
+            });
+
+            // Convert to sorted array and generate CSV
+            const equipmentList = Array.from(equipmentSet).sort();
+
+            let csv = 'Equipment Name\n';
+            equipmentList.forEach(equipment => {
+                csv += `${equipment}\n`;
+            });
+
+            return csv;
+        }
+
+        function downloadReflowCSV(csvContent, filename) {
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            showToast(`Exported ${filename} successfully!`);
+        }
+
+        // LocalStorage functionality
+        function saveToLocalStorage() {
+            try {
+                const dataToSave = {
+                    version: '1.0',
+                    savedAt: new Date().toISOString(),
+                    appData: appData,
+                    compareData: compareData,
+                    currentView: currentView,
+                    comparisonActive: comparisonActive,
+                    serverUrl: document.getElementById('serverUrl')?.value || '',
+                    reflowTitle: document.getElementById('reflowTitle')?.value || '',
+                    uiState: {
+                        currentView: currentView,
+                        comparisonActive: comparisonActive
+                    }
+                };
+
+                localStorage.setItem('niagaraNavigatorData', JSON.stringify(dataToSave));
+                console.log('Data saved to localStorage');
+            } catch (error) {
+                console.error('Error saving to localStorage:', error);
+            }
+        }
+
+        function loadFromLocalStorage() {
+            try {
+                const savedData = localStorage.getItem('niagaraNavigatorData');
+                if (!savedData) {
+                    return false;
+                }
+
+                const data = JSON.parse(savedData);
+
+                // Restore data
+                if (data.appData) {
+                    appData = data.appData;
+                }
+                if (data.compareData) {
+                    compareData = data.compareData;
+                }
+
+                currentView = data.currentView || 'tree';
+                comparisonActive = data.comparisonActive || false;
+
+                // Restore form values
+                if (data.serverUrl) {
+                    const serverUrlInput = document.getElementById('serverUrl');
+                    if (serverUrlInput) {
+                        serverUrlInput.value = data.serverUrl;
+                    }
+                }
+                if (data.reflowTitle) {
+                    const reflowTitleInput = document.getElementById('reflowTitle');
+                    if (reflowTitleInput) {
+                        reflowTitleInput.value = data.reflowTitle;
+                    }
+                }
+
+                console.log('Data loaded from localStorage');
+
+                // Show restoration notice
+                const savedAt = new Date(data.savedAt).toLocaleString();
+                showToast(`Previous session restored (saved ${savedAt})`, 'info', 5000);
+
+                return true;
+            } catch (error) {
+                console.error('Error loading from localStorage:', error);
+                return false;
+            }
+        }
+
+        function clearAllData() {
+            if (!confirm('Are you sure you want to clear all data? This will remove all imported files, templates, and settings. This action cannot be undone.')) {
+                return;
+            }
+
+            try {
+                // Clear localStorage
+                localStorage.removeItem('niagaraNavigatorData');
+                localStorage.removeItem('niagaraNavigatorCheckedItems');
+                localStorage.removeItem('niagaraNavigatorExcludedItems');
+
+                // Reset application state
+                appData = null;
+                compareData = null;
+                currentView = 'tree';
+                comparisonActive = false;
+
+                // Clear checkbox state
+                checkedItems.clear();
+                updateCheckboxDisplay();
+                updateCheckedCounter();
+
+                // Clear excluded items state
+                excludedItems.clear();
+
+                // Clear form inputs
+                const serverUrlInput = document.getElementById('serverUrl');
+                const reflowTitleInput = document.getElementById('reflowTitle');
+                if (serverUrlInput) {
+                    serverUrlInput.value = '{server}';
+                }
+                if (reflowTitleInput) {
+                    reflowTitleInput.value = '';
+                }
+
+                // Clear file inputs
+                const fileInput = document.getElementById('fileInput');
+                const compareFileInput = document.getElementById('compareFileInput');
+                if (fileInput) fileInput.value = '';
+                if (compareFileInput) compareFileInput.value = '';
+
+                // Clear all view content
+                const treeView = document.getElementById('treeView');
+                const templatesView = document.getElementById('templatesView');
+                const detailPanel = document.getElementById('detailPanel');
+                if (treeView) treeView.innerHTML = '';
+                if (templatesView) templatesView.innerHTML = '';
+                if (detailPanel) detailPanel.classList.remove('show');
+
+                // Reset detected drivers display
+                const detectedDriversEl = document.querySelector('.detected-drivers .value');
+                if (detectedDriversEl) {
+                    detectedDriversEl.textContent = 'None detected';
+                }
+
+                // Update UI
+                updateDisplay();
+
+                // Hide comparison elements
+                document.getElementById('compareBogBtn').style.display = 'none';
+                document.getElementById('clearComparisonBtn').style.display = 'none';
+                document.getElementById('comparisonBtn').style.display = 'none';
+                document.getElementById('compareFileInfo').style.display = 'none';
+
+                // Clear file names and reset to initial state
+                document.getElementById('fileName').textContent = 'None';
+                document.getElementById('compareFileName').textContent = '';
+
+                showToast('All data cleared successfully', 'success');
+                console.log('All data cleared');
+            } catch (error) {
+                console.error('Error clearing data:', error);
+                showToast('Error clearing data', 'error');
+            }
+        }
+
+        // Initialize application
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Niagara Navigator - CSV Point Explorer initialized');
+
+            // Try to load saved data
+            const dataLoaded = loadFromLocalStorage();
+
+            if (dataLoaded && appData) {
+                // Update UI to reflect loaded data
+                updateDisplay();
+
+                // Load checkbox state
+                loadCheckboxesFromLocalStorage();
+
+                // Show file info if data exists
+                if (appData) {
+                    document.getElementById('fileName').textContent = 'Restored from localStorage';
+                    document.getElementById('compareBogBtn').style.display = 'inline-flex';
+                }
+
+                if (compareData) {
+                    document.getElementById('compareFileName').textContent = 'Restored from localStorage';
+                    document.getElementById('compareFileInfo').style.display = 'block';
+                    document.getElementById('clearComparisonBtn').style.display = 'inline-flex';
+                    document.getElementById('comparisonBtn').style.display = 'inline-flex';
+                }
+            }
+        });
+    </script>
+</body>
+</html>
