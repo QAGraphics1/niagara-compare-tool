@@ -956,125 +956,8 @@
             font-weight: 600;
         }
 
-        .tips-section {
-            background: var(--surface-color);
-            border-radius: var(--radius-medium);
-            padding: 16px;
-            border: 1px solid var(--border-color);
-            box-shadow: var(--shadow-light);
-            font-size: 11px;
-            line-height: 1.4;
-        }
+        /* Configuration Panel, Export Section, Tips Section - REMOVED */
 
-        .tips-section strong {
-            color: var(--primary-color);
-            font-weight: 600;
-            margin-bottom: 8px;
-            display: block;
-        }
-
-        /* Configuration Panel */
-        .config-section {
-            background: var(--surface-color);
-            border-radius: var(--radius-medium);
-            padding: 16px;
-            border: 1px solid var(--border-color);
-            box-shadow: var(--shadow-light);
-            margin-bottom: 16px;
-        }
-
-        .config-section h4 {
-            margin: 0 0 12px 0;
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--primary-color);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .config-group {
-            margin-bottom: 12px;
-        }
-
-        .config-group label {
-            display: block;
-            font-size: 11px;
-            color: var(--text-secondary);
-            margin-bottom: 4px;
-            font-weight: 500;
-        }
-
-        .config-input {
-            width: 100%;
-            padding: 8px 10px;
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius-small);
-            font-size: 11px;
-            background: var(--background-color);
-            color: var(--text-primary);
-            transition: var(--transition);
-        }
-
-        .config-input:focus {
-            outline: none;
-            border-color: var(--accent-color);
-            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.1);
-        }
-
-        .config-display {
-            width: 100%;
-            padding: 8px 10px;
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius-small);
-            font-size: 11px;
-            background: var(--background-color);
-            color: var(--text-secondary);
-            font-family: monospace;
-        }
-
-        /* Export Section */
-        .export-section {
-            background: var(--surface-color);
-            border-radius: var(--radius-medium);
-            padding: 16px;
-            border: 1px solid var(--border-color);
-            box-shadow: var(--shadow-light);
-            margin-bottom: 16px;
-        }
-
-        .export-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .btn-export {
-            padding: 8px 12px;
-            background: var(--accent-color);
-            color: white;
-            border: none;
-            border-radius: var(--radius-small);
-            cursor: pointer;
-            font-size: 11px;
-            font-weight: 500;
-            transition: var(--transition);
-            text-align: center;
-        }
-
-        .btn-export:hover {
-            background: #2980b9;
-            transform: translateY(-1px);
-            box-shadow: var(--shadow-light);
-        }
-
-        .btn-export.secondary {
-            background: var(--secondary-color);
-        }
-
-        .btn-export.secondary:hover {
-            background: #1a252f;
-        }
-        
         .stats-mini {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -1189,6 +1072,271 @@
             width: 20px;
             height: 20px;
         }
+
+        /* Graphics Review */
+        .graphics-review {
+            padding: 20px;
+            max-width: 1400px;
+        }
+
+        .folder-info {
+            background: var(--surface-color);
+            padding: 16px;
+            border-radius: var(--radius-medium);
+            margin: 16px 0;
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .folder-info-text {
+            flex: 1;
+        }
+
+        .folder-name {
+            font-weight: 600;
+            color: var(--primary-color);
+            font-size: 15px;
+        }
+
+        .folder-stats {
+            color: var(--text-secondary);
+            font-size: 13px;
+            margin-top: 4px;
+        }
+
+        .graphic-item {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-medium);
+            padding: 16px;
+            margin-bottom: 12px;
+            transition: var(--transition);
+        }
+
+        .graphic-item:hover {
+            box-shadow: var(--shadow-medium);
+            border-color: var(--accent-color);
+        }
+
+        .graphic-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .graphic-title {
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 15px;
+            word-break: break-word;
+        }
+
+        .graphic-path {
+            color: var(--text-muted);
+            font-size: 12px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            margin-top: 4px;
+        }
+
+        .equipment-match {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+            padding: 10px;
+            background: var(--background-color);
+            border-radius: var(--radius-small);
+        }
+
+        .match-label {
+            font-weight: 500;
+            color: var(--text-secondary);
+            font-size: 13px;
+        }
+
+        .match-device {
+            font-family: 'Monaco', 'Menlo', monospace;
+            color: var(--primary-color);
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .confidence-badge {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .confidence-high {
+            background: rgba(39, 174, 96, 0.1);
+            color: var(--success-color);
+            border: 1px solid rgba(39, 174, 96, 0.3);
+        }
+
+        .confidence-medium {
+            background: rgba(243, 156, 18, 0.1);
+            color: var(--warning-color);
+            border: 1px solid rgba(243, 156, 18, 0.3);
+        }
+
+        .confidence-low {
+            background: rgba(231, 76, 60, 0.1);
+            color: var(--error-color);
+            border: 1px solid rgba(231, 76, 60, 0.3);
+        }
+
+        .issue-list {
+            margin-top: 12px;
+        }
+
+        .issue-item {
+            padding: 8px 12px;
+            margin-bottom: 6px;
+            border-radius: var(--radius-small);
+            font-size: 13px;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .issue-item.error {
+            background: rgba(231, 76, 60, 0.1);
+            border-left: 3px solid var(--error-color);
+            color: var(--error-color);
+        }
+
+        .issue-item.warning {
+            background: rgba(243, 156, 18, 0.1);
+            border-left: 3px solid var(--warning-color);
+            color: var(--warning-color);
+        }
+
+        .issue-item.info {
+            background: rgba(52, 152, 219, 0.1);
+            border-left: 3px solid var(--accent-color);
+            color: var(--accent-color);
+        }
+
+        .issue-icon {
+            flex-shrink: 0;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .issue-text {
+            flex: 1;
+            word-break: break-word;
+        }
+
+        .point-name-code {
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-weight: 600;
+            background: rgba(0, 0, 0, 0.05);
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+
+        .select-folder-btn {
+            padding: 14px 24px;
+            font-size: 15px;
+            font-weight: 600;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--radius-medium);
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: var(--shadow-light);
+        }
+
+        .select-folder-btn:hover:not(:disabled):not(.disabled) {
+            background: #094046;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .select-folder-btn:disabled,
+        .select-folder-btn.disabled {
+            background: var(--text-muted);
+            cursor: not-allowed;
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .graphics-empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-secondary);
+        }
+
+        .graphics-empty-state svg {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 20px;
+            opacity: 0.3;
+        }
+
+        /* Expandable missing points */
+        .issue-item.expandable {
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .issue-item.expandable:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .issue-item.expandable .issue-text::after {
+            content: ' ▼';
+            font-size: 10px;
+            margin-left: 8px;
+            opacity: 0.6;
+        }
+
+        .issue-item.expandable.expanded .issue-text::after {
+            content: ' ▲';
+        }
+
+        .missing-points-detail {
+            margin-top: 8px;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 4px;
+            font-size: 12px;
+            line-height: 1.6;
+            display: none;
+        }
+
+        .missing-points-detail.visible {
+            display: block;
+        }
+
+        .missing-points-list {
+            margin-top: 8px;
+            color: var(--text-secondary);
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .missing-point {
+            display: inline-block;
+            margin: 2px 4px 2px 0;
+            padding: 2px 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
     </style>
 </head>
 <body>
@@ -1261,9 +1409,9 @@
             </button>
             <div class="nav-buttons">
                 <!-- TODO: Update links to actual file paths -->
-                <a href="https://qagraphics1.github.io/metasys-compare-tool/" class="nav-button">Metasys Explorer</a>
-                <a href="https://qagraphics1.github.io/niagara-compare-tool/" class="nav-button active">Niagara Navigator</a>
-                <a href="https://qagraphics1.github.io/quote-tool/" class="nav-button">Quote Tool</a>
+                <a href="metasys-explorer.html" class="nav-button">Metasys Explorer</a>
+                <a href="niagara-navigator.html" class="nav-button active">Niagara Navigator</a>
+                <a href="quote-tool.html" class="nav-button">Quote Tool</a>
             </div>
         </div>
 
@@ -1292,6 +1440,10 @@
                 <svg class="icon"><use href="#icon-templates"></use></svg>
                 Reflow Builder
             </button>
+            <button class="btn" onclick="showView('graphics')" id="graphicsBtn" disabled title="Load a CSV file first">
+                <svg class="icon"><use href="#icon-chart"></use></svg>
+                Graphics Review
+            </button>
             <button class="btn" onclick="showView('comparison')" id="comparisonBtn" style="display: none;">
                 <svg class="icon"><use href="#icon-chart"></use></svg>
                 Comparison
@@ -1303,10 +1455,6 @@
             <button class="btn" onclick="collapseAll()">
                 <svg class="icon"><use href="#icon-collapse"></use></svg>
                 Collapse
-            </button>
-            <button class="btn" onclick="downloadJSON()">
-                <svg class="icon"><use href="#icon-chart"></use></svg>
-                Export JSON
             </button>
             <button class="btn" onclick="closeDetail()">
                 <svg class="icon"><use href="#icon-close"></use></svg>
@@ -1344,40 +1492,6 @@
                     </div>
                 </div>
 
-                <div class="config-section">
-                    <h4>Configuration</h4>
-                    <div class="config-group">
-                        <label for="detectedDrivers">Detected Drivers</label>
-                        <div id="detectedDrivers" class="config-display">None detected</div>
-                    </div>
-                    <div class="config-group">
-                        <label for="serverUrl">Server URL</label>
-                        <input type="text" id="serverUrl" class="config-input" value="{server}" onchange="updateServerUrl()" placeholder="https://your-server.com">
-                    </div>
-                </div>
-
-                <div class="export-section">
-                    <h4>Export Options</h4>
-                    <div class="export-buttons">
-                        <button class="btn-export" onclick="downloadJSON()">
-                            📥 Download JSON
-                        </button>
-                        <button class="btn-export secondary" onclick="copyJSONToClipboard()">
-                            📋 Copy to Clipboard
-                        </button>
-                        <button class="btn-export secondary" onclick="openDashboardBuilder()">
-                            🎨 Open Dashboard Builder
-                        </button>
-                    </div>
-                </div>
-
-                <div class="tips-section">
-                    <strong>Tips</strong>
-                    • Click device → see template<br>
-                    • Click point → copy ORD<br>
-                    • Click devices in detail panel<br>
-                    • Export JSON → dashboard builder
-                </div>
             </div>
             
             <div class="content">
@@ -1426,8 +1540,38 @@
                     </div>
                 </div>
                 <div id="comparisonView" class="templates-report" style="display: none;"></div>
+                <div id="graphicsView" class="graphics-review" style="display: none;">
+                    <div class="summary-card">
+                        <h2>🎨 Graphics Review</h2>
+                        <p style="margin-top: 10px; opacity: 0.9;">Scan Niagara PX (graphics) files and validate point references against loaded equipment data.</p>
+                    </div>
+
+                    <div style="margin: 20px 0;">
+                        <input type="file" id="graphicsFolderInput" webkitdirectory directory multiple style="display: none;" onchange="handleGraphicsFolderSelection(event)" disabled>
+                        <label for="graphicsFolderInput" class="select-folder-btn" id="selectFolderBtn" style="cursor: pointer; display: inline-flex;">
+                            <svg class="icon" style="width: 20px; height: 20px;"><use href="#icon-folder"></use></svg>
+                            Select Graphics Folder
+                        </label>
+                    </div>
+
+                    <div style="margin: 20px 0;">
+                        <input type="file" id="graphicsMappingInput" accept=".csv" style="display: none;" onchange="handleGraphicsMappingSelection(event)" disabled>
+                        <label for="graphicsMappingInput" class="select-folder-btn" id="selectMappingBtn" style="cursor: pointer; display: inline-flex;">
+                            <svg class="icon" style="width: 20px; height: 20px;"><use href="#icon-upload"></use></svg>
+                            Graphics Mapping CSV (optional)
+                        </label>
+                        <div style="margin-top: 10px; padding: 10px; background: rgba(0,0,0,0.2); border-radius: 4px; font-family: 'Courier New', monospace; font-size: 12px; color: var(--text-secondary);">
+                            <div style="margin-bottom: 5px; color: var(--text-primary); font-weight: 500;">BQL Query to generate mapping:</div>
+                            <code style="user-select: all;">station:|slot:/|bql:select parent.slotPath as 'Equip', displayName as 'View Name' from baja:PxView</code>
+                        </div>
+                    </div>
+
+                    <div id="graphicsMappingInfo" style="display: none;"></div>
+                    <div id="graphicsFolderInfo" style="display: none;"></div>
+                    <div id="graphicsResults"></div>
+                </div>
             </div>
-            
+
             <div id="detailPanel" class="detail-panel"></div>
         </div>
     </div>
@@ -1440,7 +1584,9 @@
         let compareData = null;
         let currentView = 'tree';
         let comparisonActive = false;
-        
+        let graphicsData = null; // { folderName, pxFiles: [], results: [] }
+        let graphicsMappingData = null; // Map(viewName -> equipmentPath)
+
         // File handling
         function openFile() {
             document.getElementById('fileInput').click();
@@ -1819,6 +1965,31 @@
                 document.getElementById('pointCount').textContent = '0';
                 document.getElementById('templateCount').textContent = '0';
                 document.getElementById('partialCount').textContent = '0';
+
+                // Disable graphics buttons when no CSV loaded
+                const graphicsBtn = document.getElementById('graphicsBtn');
+                const selectFolderBtn = document.getElementById('selectFolderBtn');
+                const graphicsFolderInput = document.getElementById('graphicsFolderInput');
+                const selectMappingBtn = document.getElementById('selectMappingBtn');
+                const graphicsMappingInput = document.getElementById('graphicsMappingInput');
+                if (graphicsBtn) {
+                    graphicsBtn.disabled = true;
+                    graphicsBtn.title = 'Load a CSV file first';
+                }
+                if (selectFolderBtn) {
+                    selectFolderBtn.classList.add('disabled');
+                    selectFolderBtn.title = 'Load a CSV file first';
+                }
+                if (graphicsFolderInput) {
+                    graphicsFolderInput.disabled = true;
+                }
+                if (selectMappingBtn) {
+                    selectMappingBtn.classList.add('disabled');
+                    selectMappingBtn.title = 'Load a CSV file first';
+                }
+                if (graphicsMappingInput) {
+                    graphicsMappingInput.disabled = true;
+                }
                 return;
             }
 
@@ -1838,6 +2009,31 @@
             document.getElementById('pointCount').textContent = nonExcludedPoints.length;
             document.getElementById('templateCount').textContent = appData.templates.exact.length;
             document.getElementById('partialCount').textContent = appData.templates.partial.length;
+
+            // Enable graphics buttons when CSV is loaded
+            const graphicsBtn = document.getElementById('graphicsBtn');
+            const selectFolderBtn = document.getElementById('selectFolderBtn');
+            const graphicsFolderInput = document.getElementById('graphicsFolderInput');
+            const selectMappingBtn = document.getElementById('selectMappingBtn');
+            const graphicsMappingInput = document.getElementById('graphicsMappingInput');
+            if (graphicsBtn) {
+                graphicsBtn.disabled = false;
+                graphicsBtn.title = '';
+            }
+            if (selectFolderBtn) {
+                selectFolderBtn.classList.remove('disabled');
+                selectFolderBtn.title = '';
+            }
+            if (graphicsFolderInput) {
+                graphicsFolderInput.disabled = false;
+            }
+            if (selectMappingBtn) {
+                selectMappingBtn.classList.remove('disabled');
+                selectMappingBtn.title = '';
+            }
+            if (graphicsMappingInput) {
+                graphicsMappingInput.disabled = false;
+            }
 
             // Update detected drivers display
             updateDetectedDriversDisplay();
@@ -2514,6 +2710,8 @@
 
         function updateDetectedDriversDisplay() {
             const displayElement = document.getElementById('detectedDrivers');
+            if (!displayElement) return; // Element removed from UI
+
             if (detectedConfig.detectedDrivers.length > 0) {
                 displayElement.textContent = detectedConfig.detectedDrivers.join(', ');
                 displayElement.style.color = 'var(--success-color)';
@@ -2723,6 +2921,7 @@
             document.getElementById('templatesView').style.display = 'none';
             document.getElementById('reflowView').style.display = 'none';
             document.getElementById('comparisonView').style.display = 'none';
+            document.getElementById('graphicsView').style.display = 'none';
 
             // Show selected view
             if (view === 'tree') {
@@ -2740,6 +2939,9 @@
                 if (comparisonActive) {
                     updateComparison();
                 }
+            } else if (view === 'graphics') {
+                document.getElementById('graphicsView').style.display = 'block';
+                closeDetail();
             }
         }
         
@@ -3350,7 +3552,13 @@
                 localStorage.setItem('niagaraNavigatorData', JSON.stringify(dataToSave));
                 console.log('Data saved to localStorage');
             } catch (error) {
-                console.error('Error saving to localStorage:', error);
+                if (error.name === 'QuotaExceededError') {
+                    console.warn('CSV data too large for localStorage (browser limit ~5-10MB). Auto-save disabled for this session.');
+                    console.info('Your work is still safe - just reload your CSV file when you return.');
+                    // Don't show error to user - localStorage is just a convenience feature
+                } else {
+                    console.error('Error saving to localStorage:', error);
+                }
             }
         }
 
@@ -3505,6 +3713,758 @@
                 }
             }
         });
+
+        // === GRAPHICS REVIEW FUNCTIONALITY ===
+
+        async function handleGraphicsMappingSelection(event) {
+            if (!appData) {
+                showToast('Please load a CSV file first', 'error');
+                return;
+            }
+
+            const file = event.target.files[0];
+            if (!file) return;
+
+            try {
+                const text = await file.text();
+                const lines = text.split(/\r?\n/).filter(line => line.trim());
+
+                if (lines.length < 2) {
+                    showToast('Mapping CSV must have at least header and one row', 'error');
+                    return;
+                }
+
+                // Parse CSV
+                const mapping = new Map();
+                let validCount = 0;
+                let invalidCount = 0;
+
+                // Skip header (line 0)
+                for (let i = 1; i < lines.length; i++) {
+                    const line = lines[i].trim();
+                    if (!line) continue;
+
+                    // Split by comma, handling quoted values
+                    const match = line.match(/^([^,]+),(.+)$/);
+                    if (!match) continue;
+
+                    let equipPath = match[1].trim();
+                    const viewName = match[2].trim();
+
+                    if (!equipPath || !viewName) continue;
+
+                    // Clean slot: prefix
+                    equipPath = equipPath.replace(/^slot:/, '');
+
+                    // Decode $20 spaces and other encoded characters
+                    equipPath = decodePxPath(equipPath);
+
+                    // Check if equipment exists in loaded CSV
+                    const equipmentExists = appData.devices.some(d => d.path === equipPath);
+
+                    if (equipmentExists) {
+                        mapping.set(viewName, equipPath);
+                        validCount++;
+                    } else {
+                        console.warn(`Equipment not found in CSV: ${equipPath} (for view: ${viewName})`);
+                        invalidCount++;
+                    }
+                }
+
+                graphicsMappingData = mapping;
+
+                // Display info
+                const infoDiv = document.getElementById('graphicsMappingInfo');
+                infoDiv.style.display = 'block';
+                infoDiv.innerHTML = `
+                    <div style="padding: 12px; background: rgba(11, 128, 122, 0.1); border-left: 3px solid #0b807a; margin: 10px 0;">
+                        ✓ Loaded graphics mapping: ${validCount} valid mappings
+                        ${invalidCount > 0 ? `<br><span style="color: var(--text-muted);">⚠ ${invalidCount} equipment paths not found in main CSV</span>` : ''}
+                    </div>
+                `;
+
+                showToast(`Loaded ${validCount} graphics mappings`, 'success');
+
+            } catch (error) {
+                console.error('Error loading graphics mapping:', error);
+                showToast('Error loading graphics mapping: ' + error.message, 'error');
+            }
+        }
+
+        async function handleGraphicsFolderSelection(event) {
+            if (!appData) {
+                showToast('Please load a CSV file first', 'error');
+                return;
+            }
+
+            const files = event.target.files;
+            if (!files || files.length === 0) {
+                return;
+            }
+
+            try {
+                showToast('Scanning for PX files...', 'info');
+
+                // Filter for .px files and extract folder info
+                const pxFiles = [];
+                let folderName = '';
+
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
+
+                    if (file.name.toLowerCase().endsWith('.px')) {
+                        // Extract folder name from first file's path
+                        if (!folderName && file.webkitRelativePath) {
+                            const parts = file.webkitRelativePath.split('/');
+                            folderName = parts[0] || 'Selected Folder';
+                        }
+
+                        // Use webkitRelativePath for full path, or just name as fallback
+                        const filePath = file.webkitRelativePath || file.name;
+
+                        pxFiles.push({
+                            name: file.name,
+                            path: filePath,
+                            file: file  // Direct File object instead of handle
+                        });
+                    }
+                }
+
+                if (pxFiles.length === 0) {
+                    showToast('No .px files found in the selected folder', 'error');
+                    return;
+                }
+
+                showToast(`Found ${pxFiles.length} PX files. Processing...`, 'info');
+
+                // Process each PX file
+                const results = [];
+                for (const fileInfo of pxFiles) {
+                    const result = await processPXFile(fileInfo);
+                    if (result) {
+                        results.push(result);
+                    }
+                }
+
+                // Store graphics data
+                graphicsData = {
+                    folderName,
+                    pxFiles,
+                    // Keep graphics with issues OR with direct equipment references (floor plans)
+                    results: results.filter(r =>
+                        r.issues.length > 0 ||
+                        (r.equipmentMatch && r.equipmentMatch.source === 'direct-reference')
+                    )
+                };
+
+                // Display results
+                displayGraphicsResults();
+                showToast(`Processed ${results.length} graphics. Found ${graphicsData.results.length} with issues or equipment matches.`, 'success');
+
+            } catch (error) {
+                console.error('Error processing folder:', error);
+                showToast('Error scanning folder: ' + error.message, 'error');
+            }
+        }
+
+        async function processPXFile(fileInfo) {
+            try {
+                const file = fileInfo.file;
+                const content = await file.text();
+
+                // Parse XML
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(content, 'text/xml');
+
+                // Check for parse errors
+                const parseError = doc.querySelector('parsererror');
+                if (parseError) {
+                    return {
+                        filename: fileInfo.name,
+                        path: fileInfo.path,
+                        error: 'XML parse error',
+                        issues: [{
+                            type: 'error',
+                            message: 'Failed to parse XML'
+                        }]
+                    };
+                }
+
+                // Extract point references
+                const pointRefs = extractPointReferences(doc, fileInfo.name);
+
+                // Extract equipment references from PxInclude (for floor plans, etc.)
+                const equipmentRefs = [];
+                const equipmentCounts = new Map(); // Track duplicates
+                const pxIncludes = doc.querySelectorAll('PxInclude');
+                pxIncludes.forEach(include => {
+                    const variables = include.getAttribute('variables');
+                    if (variables) {
+                        // Look for ANY variable containing station: or slot: paths (equipment=, VAV=, AHU=, etc.)
+                        const matches = variables.matchAll(/(\w+)=s:(station[^&\s]+|slot[^&\s]+|[^&\s]*(?:station|slot)[^&\s]*)/gi);
+                        for (const match of matches) {
+                            const encodedPath = match[2];
+                            const decodedPath = decodePxPath(encodedPath);
+                            // Remove station:|slot:, station:, or slot: prefixes
+                            let cleanPath = decodedPath
+                                .replace(/^station:\|slot:/, '')
+                                .replace(/^station:/, '')
+                                .replace(/^slot:/, '');
+
+                            // Only add paths that look like equipment paths (contain /Drivers/ or similar structure)
+                            if (cleanPath.includes('/') && !cleanPath.includes('points/')) {
+                                equipmentRefs.push(cleanPath);
+                                equipmentCounts.set(cleanPath, (equipmentCounts.get(cleanPath) || 0) + 1);
+                            }
+                        }
+                    }
+                });
+
+                // Validate point references against CSV data
+                const validation = validatePointReferences(pointRefs);
+
+                // Match to equipment
+                let equipmentMatch = null;
+
+                // If mapping CSV is loaded, ONLY use mapping (no fallback)
+                if (graphicsMappingData) {
+                    // Get PX filename without extension
+                    const pxName = fileInfo.name.replace(/\.px$/i, '');
+
+                    if (graphicsMappingData.has(pxName)) {
+                        const mappedPath = graphicsMappingData.get(pxName);
+                        const matchedDevice = appData.devices.find(d => d.path === mappedPath);
+
+                        if (matchedDevice) {
+                            equipmentMatch = {
+                                bestMatch: matchedDevice.path,
+                                confidence: 100,
+                                score: matchedDevice.points ? matchedDevice.points.length : 0,
+                                total: matchedDevice.points ? matchedDevice.points.length : 0,
+                                source: 'csv-mapping'
+                            };
+                        }
+                    } else {
+                        // Not in mapping - set to null (no match)
+                        equipmentMatch = {
+                            bestMatch: null,
+                            confidence: 0,
+                            score: 0,
+                            total: 0,
+                            source: 'not-mapped'
+                        };
+                    }
+                } else {
+                    // No mapping CSV loaded - use auto-detection
+                    equipmentMatch = matchToEquipment(pointRefs);
+
+                    // If equipment references found, try direct matching first
+                    if (equipmentRefs.length > 0 && appData.devices) {
+                        const directMatch = appData.devices.find(d =>
+                            equipmentRefs.some(ref =>
+                                d.path === ref ||
+                                d.path.includes(ref) ||
+                                ref.includes(d.path.split('/').pop())
+                            )
+                        );
+                        if (directMatch) {
+                            equipmentMatch = {
+                                bestMatch: directMatch.path,
+                                confidence: 100,
+                                score: directMatch.points ? directMatch.points.length : 0,
+                                total: directMatch.points ? directMatch.points.length : 0,
+                                source: 'direct-reference'
+                            };
+                        }
+                    }
+                }
+
+                // Collect issues
+                const issues = [];
+
+                // Add invalid point reference errors (points on graphic that don't exist in station)
+                validation.missing.forEach(point => {
+                    issues.push({
+                        type: 'error',
+                        message: `Invalid point reference: ${point.pointName} (not found in station)`,
+                        pointName: point.pointName
+                    });
+                });
+
+                // Add duplicate warnings
+                validation.duplicates.forEach(point => {
+                    issues.push({
+                        type: 'warning',
+                        message: `Duplicate binding: ${point.pointName} (${point.count}x)`,
+                        pointName: point.pointName
+                    });
+                });
+
+                // Add duplicate equipment warnings
+                equipmentCounts.forEach((count, equipPath) => {
+                    if (count > 1) {
+                        issues.push({
+                            type: 'warning',
+                            message: `Duplicate equipment reference: ${equipPath} (${count}x)`,
+                            equipmentPath: equipPath
+                        });
+                    }
+                });
+
+                // Add wrong equipment warnings
+                validation.wrongEquipment.forEach(point => {
+                    issues.push({
+                        type: 'warning',
+                        message: `Possible wrong equipment: ${point.pointName} (found in ${point.foundInDevice})`,
+                        pointName: point.pointName,
+                        foundInDevice: point.foundInDevice
+                    });
+                });
+
+                // Add completeness check - points in equipment not shown on graphic
+                if (equipmentMatch.bestMatch) {
+                    const matchedDevice = appData.devices.find(d => d.path === equipmentMatch.bestMatch);
+                    if (matchedDevice && matchedDevice.points) {
+                        const graphicPoints = new Set(pointRefs.map(ref => ref.pointName));
+                        const notOnGraphic = matchedDevice.points
+                            .filter(point => !graphicPoints.has(point.name))
+                            .map(point => point.name);
+
+                        if (notOnGraphic.length > 0) {
+                            issues.push({
+                                type: 'info',
+                                message: `Missing points: ${notOnGraphic.length} points in equipment not shown on graphic`,
+                                pointNames: notOnGraphic, // Keep all points
+                                totalCount: notOnGraphic.length
+                            });
+                        }
+                    }
+                }
+
+                return {
+                    filename: fileInfo.name,
+                    path: fileInfo.path,
+                    pointRefs,
+                    equipmentMatch,
+                    validation,
+                    issues
+                };
+
+            } catch (error) {
+                console.error(`Error processing ${fileInfo.name}:`, error);
+                return {
+                    filename: fileInfo.name,
+                    path: fileInfo.path,
+                    error: error.message,
+                    issues: [{
+                        type: 'error',
+                        message: `Error: ${error.message}`
+                    }]
+                };
+            }
+        }
+
+        function extractPointReferences(doc, filename) {
+            const pointRefs = [];
+            const pointCounts = new Map(); // Track duplicates
+
+            // Extract from ValueBinding elements
+            const valueBindings = doc.querySelectorAll('ValueBinding');
+            valueBindings.forEach((binding, index) => {
+                const ord = binding.getAttribute('ord');
+                if (ord) {
+                    const parsed = parseORD(ord, 'ValueBinding', index);
+                    if (parsed) {
+                        const key = parsed.fullORD || parsed.pointName;
+                        pointCounts.set(key, (pointCounts.get(key) || 0) + 1);
+                        pointRefs.push(parsed);
+                    }
+                }
+            });
+
+            // Extract from PxInclude elements with variables
+            const pxIncludes = doc.querySelectorAll('PxInclude');
+            pxIncludes.forEach((include, index) => {
+                const variables = include.getAttribute('variables');
+                if (variables && variables.includes('point=')) {
+                    // Parse URL-encoded point path
+                    const match = variables.match(/point=s:([^&\s]+)/);
+                    if (match) {
+                        const encodedPath = match[1];
+                        const decodedPath = decodePxPath(encodedPath);
+
+                        // Only add slot: prefix if not already present in decoded path
+                        const fullPath = decodedPath.startsWith('slot:')
+                            ? decodedPath
+                            : 'slot:' + decodedPath;
+
+                        const parsed = parseORD(fullPath, 'PxInclude', index);
+                        if (parsed) {
+                            const key = parsed.fullORD || parsed.pointName;
+                            pointCounts.set(key, (pointCounts.get(key) || 0) + 1);
+                            pointRefs.push(parsed);
+                        }
+                    }
+                }
+            });
+
+            // Add duplicate count to each point reference
+            pointRefs.forEach(ref => {
+                const key = ref.fullORD || ref.pointName;
+                ref.duplicateCount = pointCounts.get(key) || 1;
+            });
+
+            return pointRefs;
+        }
+
+        function decodePxPath(encoded) {
+            return encoded
+                // Handle double-encoded space first (sometimes appears as $2420)
+                .replace(/\$2420/gi, ' ')
+                // Standard URL encodings
+                .replace(/\$3a/gi, ':')
+                .replace(/\$2f/gi, '/')
+                .replace(/\$2d/gi, '-')
+                .replace(/\$20/gi, ' ')
+                .replace(/\$2e/gi, '.')
+                .replace(/\$2c/gi, ',')
+                .replace(/\$5f/gi, '_')
+                .replace(/\$28/gi, '(')
+                .replace(/\$29/gi, ')')
+                // Fallback: decode any remaining $XX hex codes
+                .replace(/\$([0-9A-Fa-f]{2})/g, (match, hex) => {
+                    try {
+                        return String.fromCharCode(parseInt(hex, 16));
+                    } catch {
+                        return match; // Leave unchanged if decode fails
+                    }
+                });
+        }
+
+        function parseORD(ordPath, sourceType, index) {
+            if (!ordPath) return null;
+
+            // Remove station: prefix if present
+            let path = ordPath.replace(/^station:\|?/, '');
+
+            // Check if it's a point reference (contains /points/ or ends with points/POINT_NAME)
+            if (!path.includes('/points/') && !path.match(/points\/[^\/]+$/)) {
+                return null; // Not a point reference
+            }
+
+            // Check if relativized (starts with slot:)
+            const isRelativized = path.startsWith('slot:');
+
+            // Remove slot: prefix if present
+            path = path.replace(/^slot:/, '');
+
+            // Extract point name (everything after last /points/ or points/)
+            // Handle both /points/ and points/ (PxInclude paths may not have leading slash)
+            const pointsMatch = path.match(/\/?points\/(.+)$/);
+            if (!pointsMatch) return null;
+
+            const pointName = pointsMatch[1];
+
+            // Extract equipment path (everything before /points/ or points/)
+            let equipmentPath = null;
+            if (!isRelativized) {
+                const equipMatch = path.match(/^(.+?)\/?points\//);
+                if (equipMatch) {
+                    equipmentPath = equipMatch[1];
+                }
+            }
+
+            return {
+                fullORD: ordPath,
+                pointName,
+                equipmentPath,
+                isRelativized,
+                sourceType,
+                sourceIndex: index
+            };
+        }
+
+        function validatePointReferences(pointRefs) {
+            const missing = [];
+            const duplicates = [];
+            const wrongEquipment = [];
+            const found = [];
+
+            // Create a map of all points in CSV data by point name
+            const pointsByName = new Map();
+            appData.devices.forEach(device => {
+                if (device.points) {
+                    device.points.forEach(point => {
+                        const pointName = point.name; // Extract name from point object
+                        if (!pointsByName.has(pointName)) {
+                            pointsByName.set(pointName, []);
+                        }
+                        pointsByName.get(pointName).push(device.path);
+                    });
+                }
+            });
+
+            // Check each point reference
+            const checked = new Set(); // Track which points we've already validated
+            pointRefs.forEach(ref => {
+                const key = ref.fullORD || ref.pointName;
+                if (checked.has(key)) return; // Skip duplicates for validation
+                checked.add(key);
+
+                const devicesWithPoint = pointsByName.get(ref.pointName);
+
+                if (!devicesWithPoint || devicesWithPoint.length === 0) {
+                    // Point not found anywhere
+                    missing.push(ref);
+                } else if (ref.equipmentPath) {
+                    // Full ORD - check if point exists in specified equipment
+                    if (!devicesWithPoint.includes(ref.equipmentPath)) {
+                        // Point exists but in different equipment
+                        wrongEquipment.push({
+                            ...ref,
+                            foundInDevice: devicesWithPoint[0] // Show first match
+                        });
+                    } else {
+                        found.push(ref);
+                    }
+                } else {
+                    // Relativized - point exists somewhere (will use heuristic matching)
+                    found.push(ref);
+                }
+
+                // Check for duplicates
+                if (ref.duplicateCount > 1) {
+                    duplicates.push({
+                        ...ref,
+                        count: ref.duplicateCount
+                    });
+                }
+            });
+
+            return {
+                missing,
+                duplicates,
+                wrongEquipment,
+                found
+            };
+        }
+
+        function matchToEquipment(pointRefs) {
+            // Extract unique point names from references
+            const uniquePoints = [...new Set(pointRefs.map(ref => ref.pointName))];
+
+            if (uniquePoints.length === 0) {
+                return {
+                    bestMatch: null,
+                    confidence: 0,
+                    score: 0,
+                    total: 0
+                };
+            }
+
+            // Score each device by counting how many of the graphic's points exist in that device
+            let bestMatch = null;
+            let bestScore = 0;
+
+            appData.devices.forEach(device => {
+                if (!device.points || device.points.length === 0) return;
+
+                const matchCount = uniquePoints.filter(pointName =>
+                    device.points.some(point => point.name === pointName)
+                ).length;
+
+                if (matchCount > bestScore) {
+                    bestScore = matchCount;
+                    bestMatch = device;
+                }
+            });
+
+            const confidence = bestMatch ? (bestScore / uniquePoints.length) * 100 : 0;
+
+            return {
+                bestMatch: bestMatch ? bestMatch.path : null,
+                confidence: Math.round(confidence),
+                score: bestScore,
+                total: uniquePoints.length
+            };
+        }
+
+        function displayGraphicsResults() {
+            const folderInfo = document.getElementById('graphicsFolderInfo');
+            const resultsContainer = document.getElementById('graphicsResults');
+
+            if (!graphicsData) {
+                folderInfo.style.display = 'none';
+                resultsContainer.innerHTML = '';
+                return;
+            }
+
+            // Show folder info
+            folderInfo.style.display = 'block';
+            folderInfo.innerHTML = `
+                <div class="folder-info">
+                    <div class="folder-info-text">
+                        <div class="folder-name">📁 ${graphicsData.folderName}</div>
+                        <div class="folder-stats">${graphicsData.pxFiles.length} PX files scanned</div>
+                    </div>
+                </div>
+            `;
+
+            // Show results
+            if (graphicsData.results.length === 0) {
+                resultsContainer.innerHTML = `
+                    <div class="summary-card" style="background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);">
+                        <h3 style="margin: 0;">✅ No Issues Found</h3>
+                        <p style="margin-top: 10px; opacity: 0.9;">All graphics have valid point references!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = `
+                <div class="summary-card">
+                    <h3>📊 Results Summary</h3>
+                    <div class="summary-stats">
+                        <div class="stat">
+                            <div class="stat-value">${graphicsData.results.length}</div>
+                            <div class="stat-label">Graphics with Issues</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">${graphicsData.results.reduce((sum, r) => sum + r.issues.filter(i => i.type === 'error').length, 0)}</div>
+                            <div class="stat-label">Missing Points</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">${graphicsData.results.reduce((sum, r) => sum + r.issues.filter(i => i.type === 'warning').length, 0)}</div>
+                            <div class="stat-label">Warnings</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Display each graphic with issues
+            graphicsData.results.forEach(result => {
+                const match = result.equipmentMatch;
+                let confidenceClass = 'confidence-low';
+                let confidenceLabel = 'Low';
+
+                if (match.confidence >= 80) {
+                    confidenceClass = 'confidence-high';
+                    confidenceLabel = 'High';
+                } else if (match.confidence >= 50) {
+                    confidenceClass = 'confidence-medium';
+                    confidenceLabel = 'Medium';
+                }
+
+                html += `
+                    <div class="graphic-item">
+                        <div class="graphic-header">
+                            <div>
+                                <div class="graphic-title">${result.filename}</div>
+                                <div class="graphic-path">${result.path}</div>
+                            </div>
+                        </div>
+                `;
+
+                // Show equipment match
+                if (match.bestMatch) {
+                    // Determine source badge
+                    let sourceBadge = '';
+                    if (match.source === 'csv-mapping') {
+                        sourceBadge = '<span style="background: #0b807a; color: white; padding: 2px 8px; border-radius: 3px; font-size: 11px; margin-left: 8px; font-weight: 500;">CSV Mapped</span>';
+                    } else if (match.source === 'direct-reference') {
+                        sourceBadge = '<span style="background: #3498db; color: white; padding: 2px 8px; border-radius: 3px; font-size: 11px; margin-left: 8px; font-weight: 500;">Auto-detected</span>';
+                    } else {
+                        sourceBadge = '<span style="background: #95a5a6; color: white; padding: 2px 8px; border-radius: 3px; font-size: 11px; margin-left: 8px; font-weight: 500;">Heuristic</span>';
+                    }
+
+                    html += `
+                        <div class="equipment-match">
+                            <span class="match-label">Equipment Match:</span>
+                            <span class="match-device">${match.bestMatch}</span>
+                            ${sourceBadge}
+                            <span class="confidence-badge ${confidenceClass}">${confidenceLabel} ${match.confidence}%</span>
+                            <span style="color: var(--text-muted); font-size: 12px;">(${match.score}/${match.total} points)</span>
+                        </div>
+                    `;
+                } else {
+                    // Check if this is a "not-mapped" case
+                    let noMatchMessage = 'No match found';
+                    let noMatchBadge = '';
+                    if (match && match.source === 'not-mapped') {
+                        noMatchMessage = 'Not mapped';
+                        noMatchBadge = '<span style="background: #7f8c8d; color: white; padding: 2px 8px; border-radius: 3px; font-size: 11px; margin-left: 8px; font-weight: 500;">Not in CSV</span>';
+                    }
+
+                    html += `
+                        <div class="equipment-match">
+                            <span class="match-label">Equipment Match:</span>
+                            <span style="color: var(--text-muted);">${noMatchMessage}</span>
+                            ${noMatchBadge}
+                        </div>
+                    `;
+                }
+
+                // Show issues
+                html += '<div class="issue-list">';
+                result.issues.forEach((issue, index) => {
+                    let issueClass = 'info';
+                    let icon = 'ℹ️';
+
+                    if (issue.type === 'error') {
+                        issueClass = 'error';
+                        icon = '❌';
+                    } else if (issue.type === 'warning') {
+                        issueClass = 'warning';
+                        icon = '⚠️';
+                    }
+
+                    // Check if this is an expandable info message with point names
+                    const isExpandable = issue.type === 'info' && issue.pointNames && issue.pointNames.length > 0;
+                    const expandableClass = isExpandable ? 'expandable' : '';
+                    const issueId = `issue-${result.filename.replace(/[^a-z0-9]/gi, '-')}-${index}`;
+
+                    html += `
+                        <div class="issue-item ${issueClass} ${expandableClass}" ${isExpandable ? `onclick="toggleIssueDetail('${issueId}')"` : ''}>
+                            <span class="issue-icon">${icon}</span>
+                            <span class="issue-text">${issue.message}</span>
+                        </div>
+                    `;
+
+                    // Add expandable detail section if applicable
+                    if (isExpandable) {
+                        html += `
+                            <div class="missing-points-detail" id="${issueId}">
+                                <div style="color: var(--text-secondary); margin-bottom: 8px;">
+                                    All ${issue.totalCount} missing points:
+                                </div>
+                                <div class="missing-points-list">
+                                    ${issue.pointNames.map(point =>
+                                        `<span class="missing-point">${point}</span>`
+                                    ).join('')}
+                                </div>
+                            </div>
+                        `;
+                    }
+                });
+                html += '</div>'; // Close issue-list
+
+                html += '</div>'; // Close graphic-item
+            });
+
+            resultsContainer.innerHTML = html;
+        }
+
+        // Toggle expandable issue detail
+        function toggleIssueDetail(issueId) {
+            const issueItem = document.querySelector(`[onclick*="${issueId}"]`);
+            const detailElement = document.getElementById(issueId);
+
+            if (issueItem && detailElement) {
+                issueItem.classList.toggle('expanded');
+                detailElement.classList.toggle('visible');
+            }
+        }
+
     </script>
 </body>
 </html>
